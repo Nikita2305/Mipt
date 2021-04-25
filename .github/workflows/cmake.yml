@@ -13,4 +13,4 @@ jobs:
 
     - name: Build
       working-directory: ${{github.workspace}}/task5
-      run: git clone https://github.com/google/googletest.git; mv googletest 3rdparty; mkdir build; cd build; cmake ..; cmake --build .
+      run: mkdir 3rdparty; cd 3rdparty; git clone https://github.com/google/googletest.git; mv googletest/* .; rm -r googletest; cd ..; mkdir build; cd build; cmake ..; cmake --build .
