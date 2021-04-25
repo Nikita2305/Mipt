@@ -28,14 +28,11 @@ jobs:
         cd build
         cmake ..
         make
+        cd ..
     
     - name: Test
       uses: akhtyamovpavel/ActionGtestReport@v0.0.9
       with:
-        working-directory: ${{github.workspace}}/task5/bin/
-        exec-path:  ${{github.workspace}}/task5/bin/CTestExe
-        report-path: ../report.xml
-    
-    - name: TestOut
-      working-directory: ${{github.workspace}}/task5
-      run: tree ..
+        working-directory: bin/
+        exec-path:  bin/CTestExe
+        report-path: report.xml
