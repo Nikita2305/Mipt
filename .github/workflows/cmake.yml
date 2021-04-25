@@ -32,4 +32,4 @@ jobs:
       with:
         working-directory: ${{github.workspace}}/task5/bin/
         exec-path:  ${{github.workspace}}/task5/bin/CTestExe
-        report-path: "../report.xml"
+        report-path: ../report.xml
