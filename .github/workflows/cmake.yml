@@ -2,7 +2,7 @@ name: CMake
 
 on:
   push:
-    branches: [ task5 ]
+    branches: [task5]
 
 jobs:
   build:
