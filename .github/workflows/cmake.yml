@@ -43,6 +43,6 @@ jobs:
       with:
         name: Distributive
         path: | 
-          ${{github.workspace}}/task5/bin/ 
-          ${{github.workspace}}/task5/lib/ 
+          /home/runner/work/Mipt/Mipt/task5/bin/ 
+          /home/runner/work/Mipt/Mipt/task5/lib/ 
  
