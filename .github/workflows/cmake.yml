@@ -42,5 +42,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Distributive
-        path: bin;lib 
+        path: | 
+          bin/ 
+          lib/ 
  
