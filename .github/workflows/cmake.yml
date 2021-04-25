@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
     - uses: actions/checkout@v2
 
     - name: Build
@@ -29,6 +30,6 @@ jobs:
     - name: Test
       uses: akhtyamovpavel/ActionGtestReport@v0.0.9
       with:
+        working-directory: ${{github.workspace}}/task5/bin/
         exec-path:  ${{github.workspace}}/task5/bin/CTestExe
         report-path: "../report.xml"
-        working-directory: ${{github.workspace}}/task5/bin/
