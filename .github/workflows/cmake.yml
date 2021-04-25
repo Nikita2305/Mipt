@@ -43,6 +43,6 @@ jobs:
       with:
         name: Distributive
         path: | 
-          bin/ 
-          lib/ 
+          ${{github.workspace}}/task5/bin/ 
+          ${{github.workspace}}/task5/lib/ 
  
