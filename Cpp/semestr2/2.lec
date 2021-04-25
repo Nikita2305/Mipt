@@ -1,0 +1,90 @@
+Спецификации исключений и noexcept слово.
+int f(int x, int y) noexcept { // обещание о том, что функция не бросает исключения
+	//here is no throws
+	if(y == 0)
+		throw 1; //RE + Warning
+	return x / y;
+}
+
+Иногда хотим, чтобы была noexcept, в зависимости от условий нек-ых.
+struct S {
+	int f(int x, int y) {
+		if(y == 0)
+			throw 1;
+		return x / y;
+	}
+};
+
+struct F {
+	int f(int x, int y) noexcept {
+		return x * y;
+	}
+};
+
+template <typename T>
+int f(const T& x) noexcept(noexcept(x.f(1, 0))) { //noexcept(X) - in Compile Time returns true/false if X can throw
+		//this nowexcept(bool) - условный ноэксепт
+	return x.f(1, 0);
+}
+
+
+Исключения в деструкторах.
+struct Dangerous {
+	int x = 0;
+	Dangerous(int x): x(x) {}
+	~Dangerous() {
+		if(x == 0)
+			throw 1; //исключение вызовет варнинг(т.к. деструкторы ноэксепт с с++11)
+	}
+};
+
+
+void g() {
+	Dangerous s();
+	std::cout << s.x;
+} //first exception thrown
+
+void f() {
+	Dangerous s(0);
+	std::cout << s.x;
+	g();
+} //Второе исключение вызвано в момент обработки - вызовет терминэйт. НЕ ДЕЛАТЬ ИСКЛЮЧЕНИЕ В ДЕСТРУКТОРЕ.
+
+int main() {
+	try {
+		f();
+	} catch (...) {
+		std::cout << "caught";
+	}
+}
+
+Возможно принудительно делать ~Dangerous() noexcept(false) {}
+//Исключения добавляют проблему нечитабельности, т.к. код может закончиться в любой момент.
+
+Возможность выброса исключений из польз. функций - есть проблема.
+Пример: Вектор - переаллокация памяти. Пусть конструктор копирования бросает искл.
+	Тогда может произойти исключение посередине переноса значений. По кр. мере это нужно обработать,
+	т.к. необходимо хотя бы освободить одну из двух косков памяти.
+
+Откуда следует несколько видов функций:
+1) без гарантий - всё может поломаться при броске исключения
+2) basic - гарантия. - контейнер останется в валидном состоянии
+3) strong - гарантия - контейнер останетсяя в исходном состоянии
+за исключением исключений в деструкторе
+-------------------------
+
+Тема: Итераторы.
+for(std::list<int>::iterator it = v.begin(); it != v.end(); ++it) {
+	std::cout << *it << std::endl;
+}
+
+aka for(int x : v)
+
+Категории итераторов(одна вложена в другую):
+InputIterator(можно пройти один раз). std::istream
+	forward iterator ++. forward_list
+		Bidirectional Iterator --. list, map/set
+			RandomAccessIterator -, >, <. vector/deque
+
+Разные алгоритмы принимают разные категории итераторов. Важно - это не типы, а скорее категории, чтобы понимать,
+	что они умеют, а что нет.

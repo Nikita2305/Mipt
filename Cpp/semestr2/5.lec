@@ -1,0 +1,118 @@
+// Внутреннее устройство Map/Set/List/...
+
+// Stack/Queue/PriorityQueue - обёртки в формальном смысле.
+// Почему? : реализация Stack:
+
+template <typename T, typename Container = std::deque<T>>
+class Stack {
+private:
+    Container container;
+public:
+    void push(const T& value) {
+        container.push_back(value);
+    }
+
+    void pop() {
+        container.pop_back();
+    }
+
+    T& top() {
+        return container.back();
+    }
+};
+
+// Приоритетная очередь - made by deque and heap.
+// Очередь - наверное дек тоже.
+
+// -------------LIST IMPLEMENTATION--------------
+
+template <..>
+class List {
+private:
+    struct Node {
+        T value;
+        Node* prev;
+        Node* next;
+    };
+    Node* head; 
+    Node* end; //like vector.end()
+    //end node - Fake node and after that ring the list with *tail <-> .end() <-> *head.
+    //How to create fake node without any value?
+    //  Node* fake = reinterpret_cast<Node*>(new int8_t[sizeof(Node)]);
+    //  fake->next = ..
+    //  fake->prev = ..
+    struct iterator{
+        Node* ptr;
+        T& operator*() {
+            return ptr->value;
+        }
+        iterator& operator++() {
+            ptr = ptr->next;
+            return *this;
+        }
+    }
+};
+
+//Что умеет std::list?
+//push_back/front, pop_back/front
+//insert/erase
+//merge - two sorted lists
+//reverse односвязного списка - задача на Собесах.
+//sort - не встроенный а свой, т.к. там рандом_аксесс_итеры
+    //mergesort - nlogn with forward-iter
+//splice - берем один лист и впендюриваем в середину другого. O(n) - для поддерживания size().
+    //split + slice?
+
+//Также есть forward_list.
+
+// Алгоритм (вроде) Полларда-Ро для поиска цикла в односвязном "списке".
+// Задача - скопировать односвязный список, если у каждого элемента есть доп. указатель на ещё один элемент.
+
+
+// ---------------MAP---------------
+Map - строго сбалансированное дерево(не вероятность и не в среднем, а строго) - красно-чёрное в основном.
+Краткое объяснение - что это такое.
+    Красные вершины не соеденины. Одинаковое кол-во чёрных вершин до листа от корня.
+
+struct Node { //of map
+    pair<const Key, Value> data; //because of разымеенование итератора
+    Node* parent;
+    Node* left;
+    Node* right;
+}
+//Value should have constructor() by default because m[key] = 5, creates default value if no Key.
+
+struct iterator{
+    Node* ptr;
+    pair<const key, value> operator&(){
+        return pair...;
+    }
+};
+//m.find - returns iterator
+//m.count - returns 0/1
+//iterator++ works for log(n) but for (auto t : map) works for O(n) 
+    //Why? [There are plenty large log(n)] Every v will be seen for 3 times. It's smth like dfs.
+//lowerbound, upperbound for log(n), equal_range - ??. USEFUL FOR MULTYMAP
+
+//У мапа можно передать третьим шабл. параметром - компаратор для ключей.
+
+//---------------UNORDERED_MAP---------------
+unordered_map<Key,Value,Hash<Key>,equal_to<Key>> // - методом цепочек.
+Hash(key) returns value; // for determinating where is value
+equal_to(key,key) returns bool; //for finding equal value in each chain
+
+struct Node {
+    pair<const key, Value>> data;
+    Node* next;
+    uint32_t cached; //hash of this key to determ that we're in chain while iterating through map.
+}
+
+//Solution how to iterate through un_map? Let's unite all chains in
+//  one [list / forward_list] and iterate through it.
+// Add new chain? - to the begining of the main_list.
+//That causes some problems like, how to erase pair<key,value> and save valuable pointers to prev/back.
+//  TWO solutions: 1) To make two_linked list(or how to name?).
+    // 2) To save pointer to the rend(), not begin() of chain //??????
+
+//В отличии от вектора - каждый раз память выделяется под Node - и это замедляет.
+// To be continued... //инвалидация итераторов, изменение размера хэштаблиц.

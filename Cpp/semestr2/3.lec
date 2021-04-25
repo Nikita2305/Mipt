@@ -1,0 +1,242 @@
+Чтобы задать итератор - std::list<int>::iterator it;
+
+Функции std::advance и std::distance
+std::advance(it, 3) - продвинуть итератор x на n шагов вперёд
+std::distance(a, b) - сколько шагов между a и b(UB if a > b)
+
+Вопрос - как реализовать эти функции, ведь для разных итераторов реализации разные?
+Помогает структура std::iterator_traits, в частности ::iterator_category
+
+
+#include <iterator>
+template <typename Iterator>
+void my_advance(Iterator& iter, int n) {
+    if (std::is_same_v<typename std::iterator_traits<Itarator>::iterator_category(), std::rangom_access_iterator_tag>) {
+        iter += n; // не сработает, т.к. если передать в iter = bidirectional iter, то будет компиль
+    } else {
+        
+    }
+}
+
+
+//Решение: 
+template <typename Iterator, typename IterCategory>
+void my_advance_helper(Iterator& iter, int n, IterCategory) {
+    for (int i = 0; i < n; ++i, ++iter);
+}
+
+template <typename Iterator>
+void my_advance helper(Iterator& iter, int n, std::random_access_iterator_tag) {
+    iter += n;
+}
+
+template <typename Iterator>
+void my_advance(Iterator& iter, int n) {
+    my_advance_helper(iter, n, typename std::iterator_traits<Iterator>::iterator_category());
+}
+
+// Более того существует if constexpr () {} else {}, позволяющее даже не компилировать ненужную ветку
+    //(condition в compile time проверяемо должно быть)
+
+Const iterators.
+std::list<int>::const_iterator it = lst.cbegin()
+//*it != changable
+
+Как самим делать итераторы?
+template <typename T>
+class Vector {
+    T* arr;
+    size_t sz;
+public:
+    struct iterator {
+    private:
+        T* ptr;
+    public:
+        iterator(T* ptr): ptr(ptr) {}
+        T& operator*() {
+            return *ptr;
+        }
+    
+        T* operator->() {
+            return ptr;
+        }
+        
+        iterator& operator++() {
+            ++ptr;
+            return *this;
+        }
+    }
+    iterator begin() const {
+        return iterator(arr);
+    }
+    iterator end() const {
+        return iterator(arr + sz);
+    }
+}
+
+// Чтобы сделать const итератор - придётся копипастить - плохо
+    // Решение1: наследоваться от дефолта - всё равно много переписывать
+    // Решение2: шаблоны(и далее они)
+
+//штука std::conditional_t<cond, t1, t2> - тип, который станет равным t1 в случае cond, t2 - иначе
+
+template <typename T>
+class Vector {
+    T* arr;
+    size_t sz;
+public:
+    template <bool IsConst>
+    struct common_iterator {
+    private:
+        std::conditional_t<IsConst, const T*, T*> ptr;
+    public:
+        common_iterator(T* ptr): ptr(ptr) {}
+        T& operator*() { //here make a conditional for returning value
+            return *ptr;
+        }
+    
+        T* operator->() { //here too
+            return ptr;
+        }
+        
+        common_iterator& operator++() { //...
+            ++ptr;
+            return *this;
+        }
+    }
+    iterator begin() const {
+        return iterator(arr);
+    }
+    iterator end() const {
+        return iterator(arr + sz);
+    }
+    using iterator = common_iterator<true>
+    using const_iterator<false>
+    
+}
+
+//Реализация std::conditional_t:
+template <bool B, typename T, typename F>
+struct conditional {
+    using type = F;
+}
+
+template <typename T, typename F>
+struct conditional<true, T, F> {
+    using type = T;
+}
+
+template <bool B, typename T, typename F>
+using conditional_t = typename conditional<B, T, F>::type;
+//Это всё был type_trait.
+
+
+Reverse Iterators.
+
+template <typename Iterator> //принимает классик итератор
+struct reverse_iterator { //Это лишь пример реализации. В std есть.
+private:
+    Iterator iter;
+public:
+    reverse_iterator(const Iterator& iter): iter(iter) {}
+    reverse_iterator<Iteraror>& operator++() { // Делает всё наоборот
+        --iter;
+        return *this;
+    }
+    
+    Iterator base() const {
+        return iter;
+    }
+
+}
+
+//Теперь возможно реализовать reverse_iterator в нашем классе
+
+class Vector{
+...
+    using reverse_iterator = std::reverse_iterator<iterator>;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
+    reverse_iterator rbegin() const {
+        return reverse_iterator(arr + sz - 1);
+    }
+
+    reverse_iterator rend() const { 
+        return reverse_iterator(arr - 1);
+    }
+}
+
+Чтобы пройти по листу с конца:
+for (auto it = v.rbegin(); it != v.rend(); ++it) {
+}
+
+
+Output Iterators - итераторы, гарантирующие, что можно бесконечно писать в нек. контейнер(пуш бэкать тип)
+Пример:
+    std::copy_if(l.begin(), l.end(), std::back_inserter(v), SomeClassWithBrackets())
+    //разыменование + присваивание + инкремент
+Как реализован?
+
+template <typename Container> 
+class back_insert_iterator {
+    Container& container;
+public:
+    back_insert_iterator(Container& container): container(container) {}
+
+    back_insert_iterator<Container>& operator++() {
+        return *this;
+    }
+
+    back_insert_iterator<Container>& operator*() {
+        return *this;
+    }
+
+    back_insert_iterator<Container>& operator=(const typename Container::value_type& value) {
+        container.push_back(value);
+        return *this;
+    }
+}
+
+template <typename Container>
+back_insert_iterator<Container> back_inserter(Container& container) {
+    return back_insert_iterator<Container>(container); 
+}
+
+//Зачем back_inserter вместо просто back_insert_iterator?
+//Чтобы не писать очень длинные строки с указанием всех типов, а просто передать v
+//Также есть front_insert_iterator - push_front, insert_iterator - принимает контейнер и итератор.
+    //Делает insert по итератору(в серединку короче) - для set, например
+//TODO: реализация такого говна может быть на экзе!
+
+
+Потоковые итераторы.
+//Итераторы могут быть и на потоки ввода вывода.
+    std::istream_iterator<int> it(std::cin);
+    for (int i = 0; i < 5; ++i, ++it) //first number in cin ignored? -> 1,2,3,4,5,6 -> 1,2,3,4,5
+        v.push_back(*it);
+
+//Как реализован istream_iterator?
+template <typename T>
+class istream_iterator { //input, но не forward iterator
+    std::istream& in;
+    T value; //последний считанный объект
+public:
+    istream_iterator(std::istream& in): in(in) {
+        in >> value;
+    }
+
+    istream_iterator<T>& operator++() {
+        in >> value;
+        return in;
+    }
+};
+
+//Какой-то прикол
+
+int main() {
+        std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " ")); //' ' as sep
+}
+
+//Упражнение: реализовать std::ostream_iterator
+//по аналогии с back_insert_iterator TODO: as на экзамене(жопа на экзамене)
+

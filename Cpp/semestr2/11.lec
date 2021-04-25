@@ -1,0 +1,100 @@
+Умные указатели.
+Это инструмент, который позволяет автоматически освобождать динамически выделенный ресурс
+Пример использования и полезность:
+    shared_ptr<int> p(new int(5));
+    if (some_cond)
+        throw 1;
+        // В этот момент умные указатели поймут что что-то не так и не забудут очистить память
+
+Unique_ptr - указатель, который единолично ответствененн за выделенную память
+std::unique_ptr<int> p(new int(5));
+Замечание - не стоит создавать два unique_ptr на один поинтер - UB.
+
+unique_ptr - можно мувать, но нельзя копировать.
+Пример:
+std::vector<std::unique_ptr<int>> v;
+for (int i = 0; i < 10; ++i)
+    v.emplace_back(new int(i));
+// Пример будет работать.
+
+Можно разыменовывать указатели.
+
+Для случаев, когда имеем массив:
+std::unique_ptr<int[]> p(new int[5]) // useless, но есть как возможность
+TODO: посмотреть как обращаться к i-му элементу и т.п.
+
+Shared_ptr - указатель, который разделённо владеет ресурсами.
+Слабая реализация.
+
+template <typename T>
+class shared_ptr {
+    T* ptr = nullptr;
+    size_t* count = nullptr; // считает сколько SP указывают на этот же ресурс.
+
+public:
+    explicit shared_ptr (T* ptr): ptr(ptr), count(new int(1)) {}
+    
+    ~shared_ptr() {
+        if(!count) return;
+        --*count;
+        if (!*count) {
+            delete ptr;
+            delete count;
+        }
+    }
+}
+
+size_t use_count const noexcept { return *count; }
+
+Функции make_shared, make_unique.
+Как можно(нельзя на самом деле) делать: 
+    int* p = new int(5);
+    shared_ptr<int> sp(p);
+Альтернатива:
+    shared_ptr<int> sp(new int(5)); // тоже не стоит - в совр. С++ стоит отказываться от new.
+Лучшая альтернатива:
+    shared_ptr<int> sp = std::make_shared<T>(Args...)
+
+Пример, где Альтернатива - не оч.
+void g(const shared_ptr<int>& p, int x) {}
+int f(int x) {
+    //...
+    throw 1;
+    reuturn x + 1;
+}
+
+main {
+    g(shared_ptr<int>(new int(5)), f(0)); // поскольку компилятору ваще по приколу в каком порядке вычислять
+    // то вы помрёте в этом примере между вызовом new и созданием SP
+}
+
+---make_unique implementation---
+
+template<typename T, typename... Args>
+unique_ptr<T> make_unique<Args&&... args) {
+    return unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+Как пользоваться: auto p = std::make_unique<int>(5);
+
+---make_shared implementation---
+
+template<typename T, typename... Args>
+shared_ptr<T> make_shared<Args&&... args) {
+    auto p = new ControlBlock<T>(1, std::forward<Args>(args)...);
+    return shared_ptr<T>(p);
+}
+
+in class shared_ptr append: {...
+    template <typename U>
+    struct ControlBlock {
+        T object;
+        size_t count;
+        template<typename... Args> 
+        ControlBlock(size_t count, Args&&... args) ...
+    };
+
+    friend make_shared;
+    
+    shared_ptr(ControlBlock<T>* ptr): ptr(&ptr->object), count(&ptr->count) {}
+...}

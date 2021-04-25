@@ -1,0 +1,44 @@
+ООП
+ADL - погуглить
+enum class - idea of creating type by set of possible values
+design pattern - idea of solving problem in some certain way
+
+class Gun
+
+class Bullet
+
+void shoot(){
+
+    ...new Bullet() - хотим разные виды пуль создавать, в зависимости от пушки
+	1) Gun.type = 1 ... n. - нерасширяемо
+	2) Gun.type = some_bullet_object
+	3) Gun.make_bullet() = some_function()
+	!!!4) class BulletFactory and 123BulletFactory: BulletFactory and inheritance with virtual function create
+		Gun.bulletFactory = some_bullet_factory
+		Проблемы: помимо иерархии Bullet нужно поддерживать вторую - BulletFactory
+		Ещё - фрагментирование памяти, т.к. пули по одной создаются.
+			Решение - в классе BulletFactrory сразу созданём массив(или пул - читать далее)
+			//Общие слова про дефрагментацию(Java, много маленьких объектов):
+			идея создания пула(вектор), где мы сразу выделяем массив объектов они хранятся подряд.
+	Рассмотренный паттерн - Factory method.
+}
+
+
+Когда объектов (типа Bullet) много - создаём класс WidgetFactory class, где сразу несколько методов:
+	Bullet1* create1()
+	Bullet2* create2()
+	...
+Рассмотренный паттерн - AbstractFactory
+
+Топик: Если хотим добавить новый виджет, то добавим его какую-то дефолтную реализацию в WidgetFactory.
+Кто хочет - тот переопределит.
+
+Фактори может делать не только создание, но и что-то ещё, например проходить по массиву созданных объектов.
+
+-----
+Если объект состоит из многих частей, то конструктор становится перегруженным.
+Идея - создаём класс билдер, у которого 30 полей и 30 методов - setPart_i(return *this).
+У полей есть значения по умолчанию. И метод create(), который создаёт собстна объект с нынешними знач. по умолчанию
+Тогда возможен синтаксис Gun* g = Builder().set1().set5().set29().create();
+
+Builder pattern

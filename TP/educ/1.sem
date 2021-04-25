@@ -1,0 +1,35 @@
+- terminal == то что создаёт чёрное окно
+- shell == то что интерпретирует команды
+
+//shell commands
+[mkdir] (make directory)
+[cd path] (change directory) 
+[~] (тильда) - default directory.
+[realpath ~] (shows real path of some directory. For ex ~) 
+[ls] (list) - directory content
+	also it's possible to type [ls path] to check content of some another directory
+[touch file.txt] - makes empty file
+[mv from_where to_where], [cp from_where to_where]
+	check [rm] about flag -r to operate with not empty directories
+	// ~/: dir1, dir2
+	// cp -r dir1 dir2
+	// ~/dir2: dir1 // - so cp copied dir1 to dir2, not renamed as default
+[cat file] - shows content of the file
+[rm file] - удалить файл(навсегда). Корзины не существует.
+	also it's possible to type [rm -r dir] to remove directory Recursivly
+[man command] - shows help about command
+[wc file] - shows statistics about file - strings/symbols/bytes
+//wild card - ?. Регулярные выражения
+[program > file]  [program < file]  [program_with_output | program_with_input]
+//Палка - pipe
+[ls dir | wc -l] - считает кол-во файлов. Читай мануал для wc.
+[chmod +x -x file] - change (changing mod) for this file //To execute
+	rwx - read write execute
+top/htop - Диспетчер задач
+tree - дерево файлов
+watch cmd - запускать программу через некоторый интервал времени\
+
+TODO:
+	Выполнить задания
+	Посмотреть про баш
+

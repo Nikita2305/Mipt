@@ -1,0 +1,183 @@
+type& - lvalue reference
+type&& - rvalue reference 
+
+
+Приступим.
+Expressions (c++03: 1..8, c++11: rvalue reference)
+    1) Lvalue
+        1. identifiers: x;
+        2. operator =, += on primitive types //Результат которых можно присвоить
+        3. prefix ++ -- on p.t.
+        4. unary *
+        5. result of "?:" - о тернарнике 
+            if both operands are lvalue
+        6. result of , (comma)
+            if rhs(right hand side)-operand is lvalue
+        7. result of function/method/custom operator call if returning type is lvalue reference
+        8. result of cast if resulting type is lvalue reference
+    2) Rvalue (prvalue since c++11)
+        1. literals: 5; 3.0f;
+        2. Binary + - * / ... on standart types
+        3. postfix ++ -- on p.t.
+        4. unary & + -
+        5. result of "?:"
+            if one of operands is rvalue
+        6. result of , if rhs-operand is rvalue
+        7. result of function/method/custom operator call if returning type is not reference
+        8. result of cast if resultion type is not a reference
+
+// Rvalue reference - when we need to return a reference (from function or cast) as rvalue
+// So now Rvalue = prvalue(pure rvalue) + xvalue(expired value - просроченный)
+    3) Xvalue (since c++11)
+        1. result of function/method/custom operator call if return type is rvalue - reference
+        2. result of cast if return type is rvalue reference
+        3. result of "?:" / comma(,) / result of . -> / ... For example: xvalue->field = xvalue 
+
+------
+
+How do rvalue references work? What about initialization?
+
+int x = 0
+
+int& rx = 1 // prohibited
+// const int& crx = 1 // ok btw
+int& rx = x // ok
+// could be initialized with lvalue only
+
+int&& rrx = x // prohibited
+int&& rrx = 0 // ok
+// could be initialized only with rvalue
+
+Q: is [int& rx = rrx;] possible? 
+A(wrong): No, rrx is rvalue
+A(right): Yes, because by 1).1. rrx if lvalue(identifier)
+
+Fact:
+int&& rrx = 1
+int&& rrx1 = rrx; !!<is wrong>!!
+
+Q:
+int&& rrx = 1
+const int& rx = rrx
+        possible?
+A:
+Yes, similar to ~43 string
+
+Fact:
+const int&& rrx - oxxxymoron 
+
+Q: how to make the rvalue ref rrx to the existing object x
+A: int&& rrx = std::move(x)
+
+That brings us to the point of
+1) String(const String& s) // delegating constructor
+and
+2) String(String&& s) // move constructor is the best opportunity for String(std::move(ss)) or String("slkdfj")
+
+U can see the same image as
+1. 
+const type&     const value
+type&           value
+
+All except "/" is clearly possible. "/" is possible with const_cast. 
+Where "/" is connection between type& and const value
+
+2.
+Base&       Base
+Derived&    Derived
+
+All except "/" is clearly possible. "/" is possible with dynamic_cast. 
+Where "/" is connection between Base and Derived&
+
+3.!!!
+const type&     lvalue
+type&&          rvalue
+
+All except "/" is clearly possible. "/" is possible with std::move. 
+Where "/" is connection between lvalue and type&&
+Thinking some way it's security change to destroy lvalue object to create another one(in ex. with constructor)
+
+----
+Universal references and reference collapsing
+
+f(type& x) // only lvalue
+f(type&& x) // only rvalue
+f(const type& x) // both but const
+??? // both non-const //// for move at least
+
+template <typename T>
+void f(T&& x){} // it is ???
+
+Rules of deduction.
+int main() {
+    f(5);   // T = int
+            // decltype(x) = int&&
+    int y = 5;
+    f(y)    // T = int&
+            // decltype(x) = ?(check reference collapsing rules)
+}
+
+Reference collapsing rules.
+& + & = & + && = && + & = "&"
+&& + && = "&&"
+
+so decltype(x) = & in "?"
+
+Всё это(Universal references) работает только если T&& где T - параметр непосредственно шаблонной функции.
+Пример: push_back(T&& x) - не универсальная ссылка, т.к. T - параметр класса Vector
+Замечание: они являются более предпочтительные чем всё другое.
+
+! std::move implementation.
+template <typename T>
+std::remove_reference_t<T>&& move(T&& x) noexcept {
+    return static_cast<std::remove_reference_t<T>&&>(x);
+}
+
+Вернёмся к проблемам, которые мы ставили и поймём что мы решили, а что нет.
+1) Эффективный пушбэк (?) + 
+2) Временные объекты передаём без копирования +
+
+На самом деле это немного гениально, т.к. ранее компилирующийся код (с копироованием) компилируется и теперь(но без)
+    Пример: f(getObject()) // теперь быстрее
+
+3) Если нам передали переменное число аргументов f(const Args... args) // emplace_back
+    То какие-то могли быть переданы, как lvalue, а какие-то rvalue - так что копирование должно быть избирательным
+
+
+Возникает Perfect forwarding problem. Рассмотрим также std::forward
+template <typename Args>
+void emplace_back(Args&&... args) { //Universal references
+    ...
+    AllocTraits::construct(alloc, arr + sz, std::forward<Args>(args)...); // Чтобы мувнуть те и только те,
+                                                                            // которые нужно мувнуть
+    ...
+}
+
+Std::forward implementation
+template <typename T>
+T&& forward(std::remove_reference_t<T>& x) noexcept {
+    return static_cast<T&&>(x);
+}
+
+// Case 1:
+    arg was an lvalue
+    Arg = type&
+    decltype(arg) = type&
+    T = type&
+    x = type&
+    T&& = type&
+
+// Case 2:
+    arg was rvalue
+    Arg = type
+    decltype(arg) = type&&
+    T = type
+    x = type&
+    T&& = type&&
+
+// Про emp_back:
+    "Вот эта вот хитрая конструкция порождает rvalue ровно для тех аргументов, которые пришли как rvalue
+    и lvalue - для всех остальных, а стало быть дальше в AllocTraits они проходят ровно с теми же видами value, как
+    нам их дали".
+
+// Стоит разобраться

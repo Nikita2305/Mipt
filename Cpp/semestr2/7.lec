@@ -1,0 +1,160 @@
+Структура std::allocator
+
+template <typename T>
+struct allocator { // исключительно обёртка над new/delete
+    T* allocate(size_t n) {
+        return ::operator new(n * sizeof(T));
+    }
+    
+    void deallocate(T* ptr, size_t n) {
+        ::operator delete(ptr);
+    }
+
+    template <typename... Args>
+    void construct(T* ptr, const Args&... args) {
+        new (ptr) T(args...);
+    }
+    
+    void destroy(T* ptr) {
+        ptr->~T();
+    }
+};
+
+Как может быть устроен нестандартный аллокатор.
+PoolAllocator
+Выделяет сначала много, затем в allocate отдаёт маленький кусочек, в dealloc ничего не делает.
+Полезно для List/Map/UnorderedMap.
+//Construct and Destroy - стандартные.
+
+StackAllocator
+Если известно что элементов не много то можно массив из пред. пункта выделить на стэке,
+вообще ни разу не обратившись к new.
+
+
+Allocator traits.
+Почти все аллокаторы(кроме парочки?) делают одно и то же в construct и destroy, и другие вещи.
+Чтобы не определять самому всякий мусор - есть такие вот Allocator traits, который доопределяет всё сам.
+Т.е. если ты сам определил что-то, то оно останется, иначе - будет вызван / будет обращение к чему-то дефолтному.
+
+Это шаблонная структура, которая принимает первым ш. параметром тип вашего аллоктора,
+а затем тот член класса, что хотим получить.
+Т.е. traits - это прослойка: Container -> AllocTraits -> Allocator -> new -> malloc -> system
+У AllocTraits все методы статичные и публичные.
+
+Вернёмся к вектору и напишем прально.
+template <typename T, typename Alloc = std::allocator<T>>
+class Vector {
+    Alloc alloc;
+    Vector (size_t n, ..., const Alloc& alloc = Alloc());
+    using AllocTraits = std::allocator_traits<Alloc>;
+    reserve(){
+        ..
+        // T* newarr = alloc.allocate(n); // тоже неверная реализация, обращаемся к трэйтс.
+        //alloc в свою очередь вызывает ::operator new, поэтому вектор использует new, а не new[];
+        T* newarr = AllocTraits::allocate(alloc, n);
+        size_t i = 0;
+        try {
+            ... unitialized copy ... // теперь не очень подходит, т.к. не вызывает методы аллокатора
+            for (; i < sz; ++i)
+                AllocTraits::construct(alloc, newarr + i, arr[i]);
+        } catch (..) {
+            for (size_t j = 0; j < i; ++j) 
+                AllocTraits::destroy(alloc, newarr + j);
+            AllocTraits::deallocate(newarr, n);
+        }
+        for (size_t j = 0; j < sz; ++j) 
+            AllocTraits::destroy(alloc, arr + j);
+        AllocTraits::deallocate(arr, n);
+        arr = newarr;
+    }
+    // аналогичное использование через AllocTraits::const/destr в push_back/pop_back
+}
+
+
+Имеем ещё проблемы(хотим аллоктор, создающий Node, а юзер может дать только от <T>.
+Проблема с Rebind-ом аллокатора
+template<typename T, typename Alloc = std::allocator<T>>
+class List {
+    template<class U> struct rebind { typedef allocator<U> other; };
+};
+
+Т.е. юзер нам дал аллокатор, который умеет создавать T-шки, а мы, обращаясь к other - получаем аллокатор,
+создающий Node, например(как работает?) 
+Хотя такой синтаксис устарел в С++17, удалён в 20, т.к. соотв. тайпдеф добавлен в alloc_traits.
+К этому моменту не особо понял, так что вот пример:
+
+template<typename T, typename Alloc = std::allocator<T>>
+class List {
+    //struct Node{}
+    std::allocator_traits<Alloc>::rebind_alloc<Node> alloc;
+    Теперь можно
+    List(const Alloc& alloc = Alloc()): alloc(alloc) {..} //Если не получилось - СЕ
+};
+
+//Многие аллокаторы, в том числе стандартный, можно инициализировать таким же аллокатором от любого другого типа.
+//Полей то нет:)
+
+
+Новая проблема.
+Что вообще такое копирование аллокатора - что происходит при инициализаии одного аллока другим.
+Пусть есть PoolAlloc, то что происходит при копировании аллокатора?
+Если это, например, указатель на какой-то большой кусок памяти.
+Обычно это значит, что аллокторы нужно сделать ==(также важный метод). А это что значит?
+С точки зрения выделения/освобождения памяти: если объект выделен одним аллоктором, то он божет быть удалён другим,
+равным ему, аллокатором. (Легко думать о PoolAlloc)
+Какой в этом равенстве смысл? Чтобы вектор, например, с опредлённым в конструкторе аллокатором,
+должен выделять память действительно ровно на том ресурсе, который ему передан.
+Т.е. много аллокаторов должны указывать на один и тот же ресурс(Pool, например).
+А когда все аллокаторы будут удалены, то и ресурс тоже должен быть удалён.
+Решение: shared_ptr<Pool> - вызовет delete от pointer, когда поймёт что он есть последний указатель на ресурс.
+Пример реализ {
+    T* ptr;
+    int* counter;
+}
+
+
+Поведение аллокаторов на случай копирования / присваивания контейнера.
+
+При копировании.
+vector<int, PoolAlloc> v1;
+//do smth
+vector<int, PoolAlloc> v2 = v1; //Нужно ли делать копию того или создавать новый?
+Вообще оба варианта возможны, но в зависимости от чего делается выбор.
+У AllocatorTraits есть метод(т.е. в вашем аллокаторе можно его определить, чтобы он вызывался, в станд - нет)
+select_on_container_copy_construction(const Alloc&) - Возвращает аллокатор, который должен быть при копировании.
+Если метод не определён как член Аллокатора, то возвращает тот же аллокатор.
+    // (Т.е. альтеранатива - создание нового).
+Т.е. в копировании: alloc = select_on...(vec.alloc);
+
+При присваивании.(См. доксы alloc_traits)
+propagate_on_container_copy_assignment
+propagate_on_container_move_assignment
+propagate_on_container_swap
+- определяют что делать с аллокатором при присваивании контейнеров/swap/...
+Их можно сделать true/false.
+
+Как это всё правильно использовать?
+Напишем присваивание векторов друг другую
+
+Vector<T, Alloc>& operator=(const Vector<T, Alloc>& other) {
+    for (size_t i = 0; i < sz; ++i)
+        AllocTraits::destroy(alloc, arr + i); //pop_back is possible also
+    AllocTraits::deallocate(arr, capacity);
+    if (AllocTrats::propogate_on_contaiter_copy_assignment::value && alloc != other.alloc) {
+        alloc = other.alloc; // Что делать(и стоит ли), если тут будет исключение.
+    }
+    AllocTraits::allocate(alloc, other.capacity);
+    for (size_t i = 0; i < sz; ++i)
+        AllocTraits::construct(another[i],...) //push_back(another[i]) is possibl
+    size = other.size;
+    cap = other.cap;
+    return this;
+}
+
+Что не так с этим конструктором присваивания?
+В нём нет безопасности относительно исключений. 
+
+С++ named requirements.
+- Какими свойствами должен обладать класс [с названием] [типа] Allocator?
+AllocatorAwareContainer - что там делать при копировании и присв-ии.
+Проверить что вы соотв-те можно глазами:)

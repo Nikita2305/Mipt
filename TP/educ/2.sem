@@ -1,0 +1,5 @@
+GIT
+To get files from server: PULL = FETCH + MERGE
+But in situation of large diff between origin on server and your version
+	You'll see so much conflicts you're not able to realize
+So use REBASE instead of MERGE. It will give you advantage to resolve conflicts between to neighbouring versions

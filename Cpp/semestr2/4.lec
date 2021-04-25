@@ -1,0 +1,145 @@
+Стандартные контейнеры
+Sequence-cont: vector, deque, list
+Associative-cont: set/map, unordered_set/map
+
+Vector implementation
+
+template <typename T>
+class Vector {
+    T* arr;
+    size_t sz;
+    size_t cap;
+public:
+    Vector(size_t n, const T& value = T());
+    
+    T& operator[](size_t i) {
+        return arr[i]
+    }
+
+    void resize(size_t n, cont T& value = T()) { //changes size
+        if (n < cap) reserve(cap);
+        //Следует разбирать случаи - ака добавить value-элементов или отнять хвост
+        for (size_t i = sz; i < n; ++i) {
+            
+        }
+    }
+    
+    void reserve(size_t n) { //changes capacity
+        if (n <= cap) return;
+        
+        // (1) Нельзя писать T* newarr = new T[n], т.к. создастся n объектов по умолчанию. 
+        // А иногда создание объектов недопустимо(например в конструкторе идёт захват ресурса, типа доступа к БД)
+        
+        T* new arr = reinterpret_cast<T*>(new int8_t[n * sizeof(T)]) //(2) вариант
+        for (size_t i = 0; i < sz; ++i) {
+            new(newarr + i) T(arr[i]); // - WOW! Вызов конструктора по указанному адресу.
+            //newarr[i] = arr[i]; Во втором случае проблема, т.к. на newarr[i] лежит сырая память.
+        }
+        //delete[] arr; //Во втором случае вызовет ошибку.
+        
+        //The best end
+        for (size_t i = 0; i < sz; ++i) {
+            (arr + i)->~T();
+        }
+        delete[] reinterpret_cast<int8_t*>(arr);
+        //
+        arr = newarr;
+        
+        //P.S. всё ещё плохо реализован, на самом деле.
+            //Какая ещё проблема есть? 
+            // 1 - неэффективность конструктора копирования. Есть какая-то move-семантика
+            // 2 - небезопасность относительно исключений. Если конструктор копирования бросит исключение
+            // то произойдёт утечка памяти, т.к. не будет произведён delete.
+        // Поэтому можно обернуть в try Цикл с копированием, например(вставить вместо Цикла):
+        size_t i = 0;
+        try {
+            for (; i < sz; i++) {
+                new(newarr + i) T(arr[i]);
+            }
+        } catch (...) {
+            for (size_t j = 0; j < i; ++j) {
+                (newarr + i)->~T(); //работаем в предположении что деструктор не бросает исключений
+            }
+            delete[] reinterpret_cast<int8_t*>(arr);
+            throw; //бросить дальше
+        }
+        //Заметим, что бросить искл. может только выделение памяти, но ничего делать не надо, всё в ок - сост.
+        //В стадартной либе всё это оборачивается в одну функцию:
+            //std::unitialized_copy(arr, arr + sz, newarr);
+        //Использовать так:
+        try {
+            std::unitialized_copy(arr, arr + sz, newarr); //TO USE.
+        } catch(...) {
+            delete[] reinterpret_cast<int8_t*>(newarr);
+            throw; //бросить дальше
+        }
+        //На этот момент чёта там на хор(6). Аллокаторы и мув-семантика для решения вектора
+    }
+
+    void push_back(const T& value) {
+        if (sz == cap) reserve(2 * cap);
+        new(arr + sz) T(value);
+        ++sz;
+    }    
+
+    void pop_back() {
+        (arr + sz - 1)->~T();
+        --sz;
+    }
+
+    void shrink_to_fit(); //уменьшает capacity ровно до size
+
+};
+
+//Отдельно поговорим о вектор-буль. Как он добивается 1 бита на 1 буль.
+
+//Грязный хак узнать тип.
+template <typename U>
+void f(const U&) = delete;
+...
+f(someth)
+
+
+В нашем случае vect_bool[i] = Bit_reference
+// Так вот.
+
+template<>
+class Vector<bool> {
+    int8_t* arr;
+    size_t sz;
+    size_t cap;
+
+    struct BitReference {
+        int8_t* cell;
+        uint8_t num;
+
+        BitReference& operator=(bool b) {
+            if (b) {
+                *cell |= (1u << num);
+            } else {
+                *cell &= (~(1u << num));
+            }
+            return *this;
+        }
+
+        operator bool() const {
+            return *cell & (1u << num);
+        }
+    }
+public:
+    BitReference operator[](size_t i) {
+            return Bitreference(arr + i / 8, i % 8);
+    }
+};
+
+
+//Как устроен Deque. - 1 задание С++.
+O(1) - indexing, O(1) amort. -  push_back/front, O(n) - insert, O(n) - erase, Random Access Iterators
+
+Deque = T** arr // Массив указателей на массивы(на табличку).
+По факту храним 2D табличку, где последовательно лежат элементы дека
+(и поддерживаем примерно одинаково пространства с обеих сторон для новых элементов).
+Иногда придётся дописывать строчки в табличку снизу или сверху,
+    иногда реаллоцировать массив указателей на эти строчки.
+И ещё храним (i1,j1) и (i2,j2) начало и конец дека.
+

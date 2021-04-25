@@ -1,0 +1,20 @@
+Sem 6.
+
+Pattern Facade. - фасад.
+Проблема: Графика была на OpenGL - нужно переписать на DirectX.
+Решение:
+class GraphicsFacade{
+
+}
+
+class DirectX_graphics: GraphicsFacade;
+class OpenGL_graphics: GraphicsFacade;
+//Kair - простая графика на C++
+
+Если переедем на совершенно другую либу - жопа, если каждая функция на фасаде просто
+раздвоение соотв. функций openGL и DirectX.
+Фасад должен строить высокоуровневую абстракцию, которая почти не зависит от либы.
+
+
+Decorator Pattern.
+//TODO.
