@@ -1,0 +1,179 @@
+Weak_Ptr.
+
+Проблема shared_ptr (обе об одном и том же)
+1) Циклические зависимости
+2) Дерево двунаправленных зависимостей.
+    Когда хочешь удалить поддерево, т.е. просто отцепить ребро - имеешь проблему,
+    т.к. указатели в поддереве всё ещё ссылаются друг на друга и не удалятся сами, как хотелось бы.
+
+Решением этой проблемы будет Weak_Ptr.
+    Он умеет: (он типа наблюдает, ничего с объектом не делает)
+        1) Не убит ли объект, на который ты смотришь
+        2) Дай мне shared_ptr на этот объект
+
+Тогда решением проблемы 2) будет сделать рёбра снизу вверх в дереве зависимостей weak_ptr, тогда убивание одной зависимости вниз - убъёт все поддерево. 
+    Если у вас есть циклическа зависимость (при том в две стороны), то стоит делать стрелки в одну сторону - полностью weak.
+
+Лирическое отступление по shared_ptr:
+    1) в controlBlock храним T* object
+    2) в SP убираем size_t count*
+    3) в SP добавляем controlBlock<T>* cptr = nullptr;
+    4) небольшие изменения в конструкторе
+    5)  template <typename U>
+        friend class weak_ptr<U>
+(Лекция 27: 15 минута)
+
+-----
+Реализация (для WeakPtr и Shared - общий класс ControlBlock - его реализация и изменения - ниже):
+template <typename T>
+class weak_ptr {
+private:
+    ControlBlock<T>* cptr = nullptr;    
+public:
+    weak_ptr(const shared_ptr<T>& p): cptr(p.cptr) {}
+    bool expired() const { //проверяет, что weak_ptr указывает на живой объект
+        // return cptr->count == 0 // неверно, т.к. cptr уже будет мёртв в случае == 0.
+        return cptr->shared_count == 0;
+    }
+    
+    shared_ptr<T> lock() const {
+        return shared_ptr<T>(ptr)
+    }
+
+    ~weak_ptr() {
+        if (cptr) return;
+        --cptr->weak_count;
+        if (cptr->weak_count == 0 && cptr->shared_count == 0) {
+            delete cptr;
+        }
+    }
+}
+
+// Замечание: у weak_ptr есть ещё всякие конструкторы - тривиальные. Нужно уметь писать.
+-----
+
+Из-за наличия weak_ptr - конструкция, построенная ранее, усложняется, так что пишу новый ContolBlock:
+template <typename U>
+struct ControlBlock {
+    size_t shared_count;
+    size_t weak_count;
+    T* object;
+
+    template <typename... Args>
+    ControlBlock(size_t count, Args&&... args);
+};
+
+Из-за изменений в ControlBlock, то новый ~shared_ptr() {
+    if (!cptr) return;
+    --*cptr->shared_count;
+    if (cptr->shared_count == 0) {
+        delete ptr;
+        if (cptr->weak_count == 0) {
+            delete cptr;
+        }
+    } 
+}
+
+Аналогично:
+shared_ptr(ControlBlock<T>* ptr): cptr(ptr), ptr(ptr->object) {}
+
+---- // Решена проблема циклических ссылок.
+
+
+Концепция enable_shared_from_this.
+Ситуация: У вас есть объект. К объектам которого мы имеем доступ только через shared_ptr;
+
+struct S: public enable_shared_from_this<S> {
+    shared_ptr<S> getPointer() const {
+        //вернуть указатель на себя
+        return shared_from_this();
+    }
+}
+
+// Используем CRTP = Curiously Recursive Template Pattern
+Где он тут есть? В строке ~85, когда мы используем S как шаблонный параметр, до самого объявления тела S.
+Но нет никакого Recursive, т.к. это будет лишь формальная подстановка вместо typename T -> S
+
+Реализация:
+
+template <typename T>
+class enable_shared_from_this {
+private:
+    weak_ptr<T> wptr = nullptr;
+protected:
+    shared_ptr<T> shared_from_this() const {
+        // if (...) throw std::bad_weak_ptr(...); // при вызове shared_from_this от объекта без единого shared_ptr на нашу структуру - UB до с++17.
+        return wptr.lock();
+    {
+} 
+
+А чтобы их создавать(инициализировать)??? добавим в контсруктор shared_ptr(T*): ... {
+    if constexpr (std::is_base_of_v<enable_shared_from_this<T>, T>) {
+        ptr->wptr = *this;
+    }
+}
+
+
+
+Лямбда функции и элементы функционального программирования.
+
+Базовый синтаксис и использование лямбда функций (since c++11)
+
+struct Compare {
+    bool operator()(int x, int y) const {
+        return std::abs(x - 5) < std::abs(y - 5);
+    }
+}
+
+int main () {
+    std::vector<int> v{4, 3, 6, 2, 8, 5, 7, 1, 4, 2};
+    std::sort(v.begin(), v.end(), Compare())
+}
+
+Проблема - хочется сразу в sort ебнуть функцию, которая будет сортировать, на засоряя namespace;
+Решение - лямбда-функции.
+Пример:
+
+std::sort(v.begin(), v.end(), [](int x, int y) {
+    return std::abs(x - 5) < std::abs(y - 5);
+});
+
+А можно ли создать объект f - функция? Да - вот:
+
+auto f = [](int x. int y) {
+    return std::abs(x - 5) < std::abs(y - 5);
+}
+
+Можно создать даже функцию, возвращающую функцию.
+auto getCompare() {
+    return [](int x, int y) {
+        return std::abs(...) - std::abs(...);
+    };
+}
+
+Можно вызвать её сразу.
+int main() {
+    [](int x) {
+        std::cout << x << "\n";
+    }(5);
+}
+Иногда это нужно. Пример:
+int x = ((lamda...), y); //кажется. Сначала вызовется лябда функция, потом произойдёт сравнение
+    // было полезно в конструкторе до захода в него в списках инициализации?
+
+// Как определяется тип - он сам выводится.
+А что если хочется, чтобы тип сам определялся? Вот:
+[](int x, int y) -> bool {
+    return 1;
+}
+
+
+Захват в лямбда функциях.
+В квадратных скобочках тоже кое-что может быть - списки захвата.
+int a = 5;
+int b = 6;
+[a, b](int x) {
+    std::cout << x * a + b << std::endl;
+}
+
+А ещё вместо списка захвата можно поставить знак = и ты захватишь все локальные переменные!
