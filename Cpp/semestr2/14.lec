@@ -1,0 +1,195 @@
+Шаблонное метапрограммирование, SFINAE.
+
+--Идея SFINAE и простейший пример.
+Метпрограммиррование - программирвоание над типами. Т.е. аргументы - типы.
+Первый простейший пример - std::is_same или std::remove_reference.
+
+SFINAE = Substitution Failure Is Not An Error
+Классический пример:
+template <typename T>
+void f(const T&) {
+    std::cout << 1 << std::endl;
+}
+
+void f(...) {
+    std::cout << 2 << std::endl;
+}
+
+При вызове f(100) выведется 1, т.к. частное лучше.
+
+Изменим:
+template <typename T>
+auto f(const T&) -> decltype(T().size()) {
+    std::cout << 1 << std::endl;
+    return 0;
+}
+
+int f(...) {
+    std::cout << 2 << std::endl;
+    return 0;
+}
+
+f(vector<int>({...})) // очев выбор первой версии
+f(int) // выберет первую подстановку, но .size() не сработает, так что по SFINAE пойдёт искать хорошую.
+    Притом такое правило работает только так: если компилятор по сигнатуре понимает,
+    что она не подходит, то SFINAE работает.
+
+
+С помощью трюка SFINAE можно реализовывать разные штуки.
+Например enable_if - рассмотрим его использование и реализацию.
+В зависимости от того, класс нам отдали или нет - делать разное. 
+
+template <typename T, typename = std::enable_if_t<std::is_class_v<T>>>
+void g(const T&) {
+    std::cout << 1;
+    return 0;
+}
+
+template <typename T, typename = std::enable_if_t<!std::is_class_v<std::remove_reference_t<T>>>>
+void g(T&&) {
+    std::cout << 2;
+    return 0;
+}
+
+main:
+    g(vector<int>()); // 1
+    g(5); //2
+
+
+Реализация самого enable_if:
+
+template <bool B, typename T = void>
+struct enable_if {};
+
+template <typename T>
+struct enable_if<true, T> {
+    using type = T;
+};
+
+template <bool B, typename T = void>
+using enable_if_t = typename enable_if<B, T>::type;
+
+И вот собстна почему это использует SFINAE.
+Как ты видишь, в строках 42, 48 используется enable_if_t, который падает(см стр. 70), если передать туда false.
+
+
+Перейдём к более интересной части - проверка наличия метода в классе.
+Где это нужно? Например AllocatorTraits.construct() либо вызывает Allocator.construct(), если такой есть, как метод
+    либо placement new, иначе. Проверка в compiletime. Аналогично IteratorTraits.
+
+Реализация:
+
+template <typename T, typename... Args>
+struct has_method_construct {
+private:
+    template <typename TT, typename... AArgs>
+    static auto f(int) -> decltype(TT().construct(AArgs()...), int());
+
+    template <typename...>
+    static char f(...);
+public:
+    static const bool value = std::is_same_v<decltype(f(0)), int>;
+}
+
+template <typename T, typename... Args>
+const bool has_method_construct_v = has_method_construct<T, Args...>::value;
+
+struct S {
+    void construct(int) {}
+    void construct(int, double) {}
+};
+
+main:
+    std::cout << has_method_construct_v<S, int> << std::endl;  
+    std::cout << has_method_construct_v<S, int, int> << std::endl;
+    std::cout << has_method_construct_v<S, int, int, int> << std::endl;
+
+P.S. было много версий написания строки 86. Лекция 14, ~55 минута, если нужно.
+Также было коротко рассказано о детальном устройстве AllocTraits. 1:04:00 примерно.
+
+Проблема с нашей реализацией - если нет конструктора по умолчанию, то мы чаще будем отвечать false, т.к. строка 86 будет фейлиться.
+Решением этой проблемы - будет функция declval<T>(), которая позволяет получить объект типа T.
+Детально(вместо метода 85-86 строки):
+template <typename T, typename... Args>
+static auto f(int) -> decltype(declval<TT>().construct(declval<AArgs>()...), int());
+
+Функция declval как реализована ваще.
+template <typename T>
+T&& declval noexcept; // T&& здесь для incomplete типов
+Тип называется incomplete, если нельзя создать объект этого типа: нет определения, удалён деструктор и т.п.
+
+Почему функция declval так называется.
+decltype = портал из мира объектов в мир типов
+declval = портал из мира типов в мир объектов
+В некотором смысле обратные функции.
+
+
+Как проверить, есть ли у типа конструктор с аргументами типов Args.
+Реализация is_constructible<T, Args...>, is_copy_constructible<T, Args...>
+
+template <typename T, typename... Args>
+struct is_constructible {
+private:
+    template <typename TT, typename... AArgs>
+    static auto f(int) -> decltype(TT(declval<AArgs>()...), int());
+
+    template <typename...>
+    static char f(...);
+public:
+    static const bool value = std::is_same_v<decltype(f<T, Args...>(0)), int>;
+}
+
+template <typename T, typename... Args>
+const bool is_constructible_v = is_constructible<T, Args...>::value;
+
+
+---------------------
+Ниже возможны неточности.
+
+template <typename T>
+struct is_copy_constructible {
+private:
+    template <typename TT, typename... AArgs>
+    static auto f(int) -> decltype(TT(declval<const TT&>)), int());
+
+    template <typename...>
+    static char f(...);
+public:
+    static const bool value = std::is_same_v<decltype(f<T>(0)), int>;
+}
+
+template <typename T>
+const bool is_copy_constructible_v = is_copy_constructible<T>::value;
+
+---------------------
+Ниже возможны неточности.
+
+template <typename T>
+struct is_move_constructible {
+private:
+    template <typename TT, typename... AArgs>
+    static auto f(int) -> decltype(TT(declval<TT>)), int());
+
+    template <typename...>
+    static char f(...);
+public:
+    static const bool value = std::is_same_v<decltype(f<T>(0)), int>;
+}
+
+template <typename T>
+const bool is_move_constructible_v = is_move_constructible<T>::value;
+
+---------------------
+Или, два последних можно сделать так:
+
+template <typename T>
+const bool is_copy_constructible_v = is_constructible<T, const T&>::value
+
+template <typename T>
+const bool is_move_constructible_v = is_constructible<T, T&&>::value
+
+
+Где можно использовать мета-програмирование?
+Там где важна оптимизация и типа можно часть вычислений на этап компиляции.
+
+Я тут устал - возможен бред.
