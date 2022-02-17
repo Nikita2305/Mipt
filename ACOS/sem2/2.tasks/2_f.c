@@ -3,69 +3,50 @@
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/signalfd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
-int TERM_indicator;
-int N = 0;
-char** arr;
-
-void SIGUSR_handler(int signum)
-{
-    if (TERM_indicator == 1 || signum - SIGRTMIN == 0) {
-        TERM_indicator = 1;
-        return;
-    }
-    int x = signum - SIGRTMIN;
-    if (x > N) {
-        return;
-    }
-    int fd = open(arr[x], O_RDONLY);
-    int just_read = 0;
-    const int temp_read = 1024;
-    char buf[temp_read];
-    while ((just_read = read(fd, buf, temp_read)) > 0) {
-        write(1, buf, just_read);
-    }
-    close(fd);
-}
+int MAX_LENGTH = 4000;
 
 int main(int argc, char* argv[])
 {
-    N = argc - 1;
-    arr = argv;
-    struct sigaction usr_handler;
-    memset(&usr_handler, 0, sizeof(usr_handler));
-    usr_handler.sa_handler = SIGUSR_handler;
-    usr_handler.sa_flags = SA_RESTART;
-    sigset_t fullmask;
-    sigfillset(&fullmask);
-    usr_handler.sa_mask = fullmask;
-
+    sigset_t full_mask;
+    sigfillset(&full_mask);
+    sigprocmask(SIG_SETMASK, &full_mask, NULL);
     sigset_t mask;
-    sigfillset(&mask);
+    sigemptyset(&mask);
     for (int i = SIGRTMIN; i <= SIGRTMAX; i++) {
-        sigaction(i, &usr_handler, NULL);
-        sigdelset(&mask, i);
+        sigaddset(&mask, i);
     }
-    sigprocmask(SIG_SETMASK, &mask, NULL);
+    int sfd = signalfd(-1, &mask, 0);
 
-    TERM_indicator = 0;
-    /*
-    pid_t self_pid = getpid();
-    printf("%d\n", self_pid);
-    fflush(stdout);
-
-    int fd = open("temp.txt", O_WRONLY | O_TRUNC | O_CREAT, 0666);
-    if (fd == -1) {
-	    printf("Wassup\n");
-	    return 1;
+    FILE* files[argc];
+    for (int i = 1; i < argc; i++) {
+        files[i] = fopen(argv[i], "r");
     }
-    dup2(fd, 1);
-    */
 
-    while (TERM_indicator == 0) {
-        pause();
+    while (1) {
+        struct signalfd_siginfo signal;
+        read(sfd, &signal, sizeof(signal));
+        int x = signal.ssi_signo - SIGRTMIN;
+        if (x == 0) {
+            break;
+        }
+        if (x > argc) {
+            continue;
+        }
+        char string[MAX_LENGTH];
+        if (fgets(string, MAX_LENGTH, files[x])) {
+            fputs(string, stdout);
+        } else {
+            fputs("\n", stdout);
+        }
+        fflush(stdout);
+    }
+    close(sfd);
+    for (int i = 1; i < argc; i++) {
+        fclose(files[i]);
     }
 }
