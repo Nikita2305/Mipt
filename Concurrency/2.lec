@@ -1,0 +1,89 @@
+# TODO: write about fibers
+
+Потоки.
+Единственный способ, которым мы будем запускать - ThreadPool
+Это абстракция позволяющая распределять работу через метод Submit
+
+Плохая идея - блокироваться в потоке. // sleep or sth
+
+Этого класса пока нет в std::, соу детали конкретной реализации неважны.
+Он появится нескоро. Наша цель - написать threadPool с какой-то степенью "хорошести"
+
+Наш план - Queue под капотом у ThreadPool-а, где клиенты кладут свои задачи,
+а Worker-ы будут вытаскивать задачи.
+В общем - не всегда норм иметь только Queue.
+
+Пример - quicksort, mergesort.
+quicksort - проще с той single-method-Submit структурой - getTask/pivot()/Submit(left)/Submit(Right)
+mergesort - сложнее, т.к. появляется зависимость - после исполнения второй half - merge.
+
+Мы будем развивать две концепции параллельно - Fiber и ThreadPool
+fiber будет давать ThreadPool-у неблокирующие кусочки задач.
+TP ничего не знает о F. F знает только о наличии Submit().
+
+Далее следует реализация TP.
+Создаём потоки - запускаем в них WorkerRoutine
+Наша первая цель - написать асинхронную очередь(шаблонную) - как примитив общения между потоками.
+
+// Unbounded Multi-Producer/Multi-Consumer Blocking Queue.
+// MPMC
+
+void Put(T value) {
+    std::lock_guard guard(mutex_);
+    buffer_.pb(std::move(value));    
+}
+
+T Take() {
+    while (True) {
+        std::unique_lock lock(mutex_);
+        if (!buffer._empty()) {
+            return TakeLocked();
+        } else {
+            lock.unlock()
+            sleep(10ms); // chrono
+        }
+    }
+}
+
+T TakeLocked() {
+    assert(!buffer_.empty());
+    T front(..)
+    buffer.pop()
+    return T;
+}
+
+std::deque<T> buffer_
+std::mutex mutex_;
+
+После запуска программы получили 1% data race, т.е. 1% постфиксных инкрементов сломались.
+Это кстати показатель того, что инкременты выполнялись в разных потоках.
+
+Пытаемся улучшить очередь.
+
+thread.condition_variable
+    wait(lock) - отпустить блокировку с потока
+    notifyAll/One - вернуть блокировку потоку
+// Способ дождаться выполнения некоторого условия.
+
+-- Используем это и пишем улучшенный Take.
+
+// add field:
+conditional_variable cv_;
+
+T Take() {
+    std::unique_lock lock(mutex_);
+    if (buffer_.empty()) {
+        cv_.wait(lock);
+    }
+    return TakeLocked();
+}
+
+Put --> append to end:
+    cv_.notify_one();
+
+Проблема:
+Опа - имеем race-condition. // помни - не тоже самое, что и data race.
+Там произошла гонка в Take. Один поток придёт в состояние return после if/wait,
+другой просто сразу пришёл.
+Решение проблемы - всегда использовать condvar вместе с while (не if)
+Важно: понять, почему именно это надо делать(важно на зачёте).
