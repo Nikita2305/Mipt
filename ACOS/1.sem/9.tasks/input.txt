@@ -1,0 +1,6 @@
+files/t/src/kuk.c
+files/t/sym
+../files/t/kuk.c
+../files/t/sym
+files/
+files/ss
