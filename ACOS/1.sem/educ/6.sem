@@ -1,0 +1,126 @@
+Вещественные числа.
+
+Работает только в Intel
+
+extern func(double a, double c, double x) {
+    return a*x*x + c;
+}
+
+ARGS:
+xmm0, ..., xmm15 = 128 bit
+64 bit for double
+32 bit for float
+
+return value: xmm0
+
+Старшая часть нужна для хранения нескольких значений в одном регистре.
+
+Векторные инструкции - несколько симпл-штук сразу
+Например - в 128 битах лежит 4 инта
+Достаточно сложить два дабла и получим 4 сложенных инта.
+Замечание: переполнение одного из интов не влияет на другие.
+
+Такие регистры называются sse регистры.
+
+Вертикальные операции - например сложение(как выше)
+Горизонтальные операции - например найти минимум на регистре.
+
+ymm0 ... ymm15  === 256 bit
+Младшая часть лежит в xmm.
+
+Такие большие регистры называются AVX регистры.
+
+lscpu - способ увидеть инструкцию
+cat /proc/cpuinfo
+
+-mavx - флаг компиляции, чтобы компиляция прошла с AVX
+
+zmm0 ... zmm15 === 512
+avx512 - регистры
+
+Задача на сегодня:
+Научиться использовать AVX регистры.
+
+---- кодим нулёвку ----
+#include <immintrin.h>
+#include <stdaligh.h>
+
+double func(int N, float* A, float* B, float* R){
+    // R[i] = A[i] + B[i]
+    int count = N / 8;
+    for (int i = 0; i < count; i++) {
+        __m256 a = _mm256_load_ps(A)
+        // b = B
+        __m256 r = mm256_add_ps(a, b);
+        _mm256_store_ps(R, r);
+        
+    }  
+} 
+
+int main() {
+    // size_t N = 8; // bad bugfix 
+    _Alignas(32) float A[] = {1..8} // or alignas(32) as good bugfix
+    _Alignas(32) float B[] = {1..8}
+    _Alignas(32) float R[8]; // 32 = 256 / 8
+    func(8, A, B, R);
+    // %r %f - експон. форма %g
+}
+
+компиляция: gcc -mavx problem.c
+Jeppa - не скомпилилось, см багфикс
+Если мы делаем alignas(64), то это выраванивание по кэшлинии,
+а это хорошечно т.к. эффективно работает.
+
+-------
+
+[v]mov[a, u][s, p][s, d], for ex. movss, movpd
+v = work with AVX
+a, u - works with aligned registers, works with unaligned.
+s, p = scalar, package
+s, d = single, double
+
+Смотреть на сайте Intel intrinsics.
+
+-------
+
+Т.е. в силу новой инфы, можно юзать loadu, add, storeu
+    и убрать все эти align
+
+Как посчитать сумму в регистре?
+1) Циклом ебашим жёско.
+2) Хуйта, погнали так:
+
+blendps - смешивание двух векторов.
+mask_i = 0 => ans_i = x_i
+mask_i = 1 => ans_i = y_i
+
+Цель - сделать сдвиг влево.
+1 | x7 x6 x5 x4 x3 x2 x1 x0 | 0b00111001
+2 | x4 x7 x6 x5 x0 x3 x2 x1 |
+3 | 0  0  0  0  x4 x7 x6 x5
+а теперь можно блендить
+4 | 0  x7 x6 x5 x4 x3 x2 x1
+
+for (int i = 0; i < 8; i++) {
+    float scalar = _mm256_cvtss_f32(r); // откусить младший бит
+    acc += scalar;
+    __m256 temp2 = _mm256_permute_ps(r, 0b00111001); // №2
+    __m256 temp3 = _mm256_permute2f128_ps(temp2, temp2, 0b10000001);
+    r = _mm256_blend_ps(temp2, temp3, 0b10001000);
+}
+return acc / 8;
+printf("%lf", average)
+
+Хабр
+# pragma omp simd
+
+Задача2.
+Точность до 6ого знака после точки.
+Запустить маклорен.
+Считать в дабле.
+
+Задача3.
+_mm256_dp_ps
+
+Задача4.
+На С с использованием векторных инструкций.
