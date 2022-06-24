@@ -1,0 +1,22 @@
+image: amd64/gradle:7.4.1-jdk17
+
+stages:
+  - test
+
+services:
+  - name: docker:dind
+    command: ["--tls=false"]
+
+variables:
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+
+run test:
+  stage: test
+  tags:
+    - docker-atp
+  script:
+    - echo -e "STARTING TESTS"
+    - cd runner && ./gradlew test
+    - echo -e "DONE"

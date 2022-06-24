@@ -1,0 +1,37 @@
+comment: 'Running main workflow with initial steps'
+before_all:
+  - comment: 'Install dependencies'
+    subtasks:
+      - type: 'shell'
+        file_location: './bash/hello.sh'
+before_each:
+  - comment: 'Echo hello in console'
+    subtasks:
+      - type: 'shell'
+        file_location: './bash/hello.sh'
+main_tasks:
+  - comment: 'SQL scripts'
+    subtasks:
+        - type: 'complex_sql'
+         file_location: './sql/3.sql'
+        - type: 'complex_sql'
+         file_location: './sql/4.sql'
+        - type: 'complex_sql'
+         file_location: './sql/5.sql'
+        - type: 'complex_sql'
+         file_location: './sql/6.sql'
+        - type: 'complex_sql'
+         file_location: './sql/8.sql'
+        - type: 'complex_sql'
+         file_location: './sql/9.sql'
+        - type: 'complex_sql'
+         file_location: './sql/10.sql'
+        - type: 'complex_sql'
+         file_location: './sql/11.sql'
+        - type: 'complex_sql'
+         file_location: './sql/drop.sql'
+after_each:
+  - comment: 'Echo goodbye in console'
+    subtasks:
+      - type: 'shell'
+        file_location: './bash/bye.sh'
