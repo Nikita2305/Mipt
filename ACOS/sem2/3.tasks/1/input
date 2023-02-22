@@ -1,0 +1,6 @@
+GET l.sh HTTP/1.1
+hello
+hello
+world
+
+bug

@@ -1,0 +1,14 @@
+https://www.maastaar.net/fuse/linux/filesystem/c/2016/05/21/writing-a-simple-filesystem-using-fuse/
+
+gcc 0.c -o file -lfuse3
+LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu
+export LD_LIBRARY_PATH
+./file work
+
+fusermount3 -u work
+
+
+11201  апр 16 13:31:55 gcc -fPIC -shared -o libzero.so zero.c
+11674  апр 17 16:16:56 gcc -shared -fPIC -o libMy.so l.c
+
+gcc -Wall -I/usr/include/python3.6 -fPIC -shared -o matrix.so 0.c

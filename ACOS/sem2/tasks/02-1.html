@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script type="text/javascript" src="/ejudge/jquery.min.js"></script>
+<script type="text/javascript" src="/ejudge/unpriv.js"></script>
+<script type="text/javascript">
+  var SID="a9d4d042731a5b0a";
+  var NEW_SRV_ACTION_JSON_USER_STATE=175;
+  var NEW_SRV_ACTION_VIEW_PROBLEM_SUMMARY=137;
+  var self_url="https://ejudge.atp-fivt.org/client";
+  var script_name="/client";
+  var jsonState = { "h": 20, "m": 41, "s": 27, "d": 13, "o": 5, "y": 2022 };
+  var updateFailedMessage = "STATUS UPDATE FAILED!";
+  var testingInProgressMessage = "TESTING IN PROGRESS...";
+  var testingCompleted = "TESTING COMPLETED";
+  var waitingTooLong = "REFRESH PAGE MANUALLY!";
+</script>
+<link rel="stylesheet" href="/ejudge/unpriv.css" type="text/css" />
+<link rel="stylesheet" href="/ejudge/unpriv3.css" type="text/css" />
+
+<title>Никитин Никита Николаевич [Весна 2022 - ПМИ - 029 - Четвертый модуль]: Submit a solution</title></head>
+<body onload="startClock()"><div id="main-cont"><div id="container"><div id="l12-col"><div id="l12">
+<div class="main_phrase">Никитин Никита Николаевич [Весна 2022 - ПМИ - 029 - Четвертый модуль]: Submit a solution</div>
+<div id="main-menu">
+<ul>
+
+<li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=143">Settings</a></div></li>
+
+
+<li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=2">Info</a></div></li><li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=137">Summary</a></div></li><li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=140">Submissions</a></div></li><li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=94">Standings</a></div></li><li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=141">Submit clar</a></div></li><li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=142">Clars</a></div></li>
+<li><div class="contest_actions_item"><a class="menu" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=74">Logout [ami-029-08]</a></div></li>
+</ul>
+</div>
+</div></div>
+<div id="l11"><img src="/ejudge/logo3.png" alt="logo"/></div>
+<div id="l13">
+<div class="server_status_on" id="statusLine">
+<div id="currentTime">20:41:27</div> / <b>RUNNING</b><div id="reloadButton" style="visibility: hidden">/ <a class="menu" onclick="reloadPage()"><b>[ REFRESH ]</b></a></div><div id="statusString" style="visibility: hidden"></div></div>
+<br/>
+<table class="probNav">
+<tr><td class="b0" id="probNavTaskArea" valign="top"><div id="probNavTaskArea">
+
+
+
+
+<h2>Submit a solution for inf-IV-02-1-http/http-post</h2>
+
+<table class="line-table-wb">
+
+
+    <tr><td><b>Full score:</b></td><td><tt>100</tt></td></tr>
+
+    <tr><td><b>Run penalty:</b></td><td><tt>5</tt></td></tr>
+
+
+
+
+
+
+    <tr><td><b>Time limit:</b></td><td><tt>1 s</tt></td></tr>
+
+
+    <tr><td><b>Real time limit:</b></td><td><tt>5 s</tt></td></tr>
+
+
+    <tr><td><b>Memory limit:</b></td><td><tt>64M</tt></td></tr>
+
+
+
+
+
+    <tr><td><b>Open date:</b></td><td><tt>2022/04/13 09:00:00</tt></td></tr>
+
+
+
+
+
+    <tr><td><b>Date penalty formula:</b></td><td><tt>2022/06/01 09:00:00 0-1/h</tt></td></tr>
+
+    <tr><td><b>Current penalty:</b></td><td><tt>548</tt></td></tr>
+
+    <tr><td><b>Next soft deadline:</b></td><td><tt>2022/05/13 20:59:00</tt></td></tr>
+
+
+
+
+
+</table>
+
+<h3>Problem inf-IV-02-1: http/http-post</h3>
+<p>В аргументах командной строки передаются: 1) имя сервера;
+  2) путь к скрипту на сервере, начинающийся с символа <tt>/</tt>; 3) имя локального файла для отправки.</p>
+
+
+<p>Необходимо выполнить HTTP-POST запрос к серверу, в котором отправить содержимое файла.</p>
+<p>На стандартный поток ввода вывести ответ сервера (исключая заголовки).</p>
+
+<p>Запрещено использовать сторонние библиотеки.</p>
+
+    <h3>Submit a solution</h3><form method="post" enctype="multipart/form-data" action="https://ejudge.atp-fivt.org/client"><input type="hidden" name="SID" value="a9d4d042731a5b0a"/><input type="hidden" name="prob_id" value="4" />
+<table class="b0">
+<input type="hidden" name="lang_id" value="2" />
+<tr><td class="b0">Language:</td><td class="b0">gcc - Plain C, 64 bit, using -std=c11 or -std=gnu11</td></tr>
+<tr><td class="b0">File</td><td class="b0"><input type="file" name="file"/></td></tr>
+<tr><td class="b0">Send!</td><td class="b0"><input type="submit" name="action_40" value="Send!" /></td></tr></table></form>
+<h2>Previous submissions of this problem</h2>
+<table class="table"><tr><th class="b1">Run ID</th><th class="b1">Time</th><th class="b1">Size</th><th class="b1">Problem</th><th class="b1">Language</th><th class="b1">Result</th><th class="b1">Tests passed</th><th class="b1">Score</th><th class="b1">View source</th><th class="b1">View report</th></tr>
+<tr>
+<td class="b1">422</td><td class="b1">2022/04/21 21:01:15</td><td class="b1">2220</td><td class="b1">inf-IV-02-1</td><td class="b1">gcc</td><td class="b1">Pending review</td><td class="b1">2</td><td class="b1"><b>79</b>=100-21</td><td class="b1"><a href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=36&amp;run_id=422">View</a></td><td class="b1"><a href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=37&amp;run_id=422">View</a></td>
+</tr>
+</table>
+
+
+
+
+
+</div></td><td class="b0" id="probNavRightList" valign="top"><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=1">inf-IV-01-0</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=2">inf-IV-01-1</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=3">inf-IV-02-0</a></div><div class="probCurrent"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=4">inf-IV-02-1</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=5">inf-IV-02-2</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=6">inf-IV-03-0</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=7">inf-IV-03-1</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=8">inf-IV-04-0</a></div><div class="probEmpty"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=9">inf-IV-04-1</a></div><div class="probEmpty"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=10">inf-IV-04-2</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=11">inf-IV-05-0</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=12">inf-IV-05-1</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=13">inf-IV-05-2</a></div><div class="probOk"><a class="tab" href="https://ejudge.atp-fivt.org/client?SID=a9d4d042731a5b0a&amp;action=139&amp;prob_id=14">inf-IV-05-3</a></div></td></tr></table>
+<div id="footer"><p class="ejudge_copyright"><a href="http://www.ejudge.ru">ejudge 3.8.0 #3 (2020-09-16 10:49:02)</a>.</p>
+<p class="ejudge_copyright">Copyright &copy; 2000-2020 Alexander Chernov.</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,892 @@
+21
+/.Trash
+21
+/.Trash-1000
+21
+/BDMV
+21
+/.xdg-volume-info
+21
+/autorun.inf
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/cur
+21
+/dir
+21
+/dir2
+21
+/dir3
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/autorun.inf
+21
+/dir3
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/
+check name: {cur/} with {}
+passed {cur}
+check name: {cur/b/} with {}
+check name: {cur/b/bb} with {}
+check name: {cur/c} with {}
+check name: {cur/a/} with {}
+check name: {cur/a/aa} with {}
+check name: {cur/a/aaa} with {}
+check name: {cur/test} with {}
+check name: {dir/} with {}
+passed {dir}
+check name: {dir/b/} with {}
+check name: {dir/b/bb} with {}
+check name: {dir/c} with {}
+check name: {dir/a/} with {}
+check name: {dir/a/aa} with {}
+check name: {dir2/} with {}
+passed {dir2}
+check name: {dir2/c} with {}
+check name: {dir2/a/} with {}
+check name: {dir2/a/aaa} with {}
+check name: {dir3/} with {}
+passed {dir3}
+check name: {dir3/c} with {}
+check name: {dir3/test} with {}
+21
+/cur
+21
+/dir
+21
+/dir2
+21
+/cur
+check name: {} with {cur}
+check name: {b/} with {cur}
+passed {b}
+check name: {b/bb} with {cur}
+check name: {c} with {cur}
+passed {c}
+check name: {a/} with {cur}
+passed {a}
+check name: {a/aa} with {cur}
+check name: {a/aaa} with {cur}
+check name: {test} with {cur}
+passed {test}
+21
+/dir
+check name: {} with {dir}
+check name: {b/} with {dir}
+passed {b}
+check name: {b/bb} with {dir}
+check name: {c} with {dir}
+passed {c}
+check name: {a/} with {dir}
+passed {a}
+check name: {a/aa} with {dir}
+check name: {/} with {dir}
+check name: {/c} with {dir}
+check name: {/a/} with {dir}
+check name: {/a/aaa} with {dir}
+check name: {/} with {dir}
+check name: {/c} with {dir}
+check name: {/test} with {dir}
+21
+/dir2
+check name: {} with {dir2}
+check name: {c} with {dir2}
+passed {c}
+check name: {a/} with {dir2}
+passed {a}
+check name: {a/aaa} with {dir2}
+21
+/dir3
+check name: {} with {dir3}
+check name: {c} with {dir3}
+passed {c}
+check name: {test} with {dir3}
+passed {test}
+21
+/cur
+21
+/cur
+check name: {} with {cur}
+check name: {b/} with {cur}
+passed {b}
+check name: {b/bb} with {cur}
+check name: {c} with {cur}
+passed {c}
+check name: {a/} with {cur}
+passed {a}
+check name: {a/aa} with {cur}
+check name: {a/aaa} with {cur}
+check name: {test} with {cur}
+passed {test}
+21
+/cur
+21
+/cur/b
+21
+/cur/c
+21
+/cur/a
+21
+/cur/test
+21
+/cur/a
+check name: {} with {cur/a}
+check name: {aa} with {cur/a}
+passed {aa}
+check name: {aaa} with {cur/a}
+passed {aaa}
+21
+/cur/b
+check name: {} with {cur/b}
+check name: {bb} with {cur/b}
+passed {bb}
+21
+/cur
+21
+/cur/a
+21
+/cur/a
+check name: {} with {cur/a}
+check name: {aa} with {cur/a}
+passed {aa}
+check name: {aaa} with {cur/a}
+passed {aaa}
+21
+/cur/a
+21
+/cur/a/aa
+21
+/cur/a/aaa
+21
+/cur/a
+21
+/cur
+21
+/dir3

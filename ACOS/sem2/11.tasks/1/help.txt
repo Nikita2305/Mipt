@@ -1,0 +1,17 @@
+https://www.maastaar.net/fuse/linux/filesystem/c/2016/05/21/writing-a-simple-filesystem-using-fuse/
+
+gcc 0.c -o file -lfuse3
+export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu
+./file work --src dir:dir2:dir3
+ls work
+cd work
+echo -r "\n"
+tree
+ls -a
+echo -r "\n"
+ls -la dir*
+echo -r "\n"
+wc dir*
+echo -r "\n"
+cd ..
+fusermount3 -u work
