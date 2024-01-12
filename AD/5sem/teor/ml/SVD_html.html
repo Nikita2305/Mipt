@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0227)http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+				<meta name="keywords" content="Простой итерационный алгоритм сингулярного разложения,Алгоритм,Метод главных компонент,Сингулярное разложение,Ранг матрицы,Тензор,Болванка статьи,Инструктаж">
+		<link rel="shortcut icon" href="http://www.machinelearning.ru/favicon.ico">
+		<link rel="search" type="application/opensearchdescription+xml" href="http://www.machinelearning.ru/wiki/opensearch_desc.php" title="MachineLearning (Русский)">
+		<link title="Creative Commons" type="application/rdf+xml" href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;action=creativecommons" rel="meta">
+		<link rel="copyright" href="http://creativecommons.org/licenses/by-sa/3.0/">
+<link rel="alternate" type="application/rss+xml" title="MachineLearning — RSS-лента" href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Recentchanges&amp;feed=rss">
+<link rel="alternate" type="application/atom+xml" title="MachineLearning - Atom лента" href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Recentchanges&amp;feed=atom">
+		<title>Простой итерационный алгоритм сингулярного разложения</title>
+		<style type="text/css" media="screen, projection">/*<![CDATA[*/
+			@import "/wiki/skins/common/shared.css?116";
+			@import "/wiki/skins/monobook/main.css?116";
+		/*]]>*/</style>
+		<link rel="stylesheet" type="text/css" media="print" href="./SVD_html_files/commonPrint.css">
+		<!--[if lt IE 5.5000]><style type="text/css">@import "/wiki/skins/monobook/IE50Fixes.css?116";</style><![endif]-->
+		<!--[if IE 5.5000]><style type="text/css">@import "/wiki/skins/monobook/IE55Fixes.css?116";</style><![endif]-->
+		<!--[if IE 6]><style type="text/css">@import "/wiki/skins/monobook/IE60Fixes.css?116";</style><![endif]-->
+		<!--[if IE 7]><style type="text/css">@import "/wiki/skins/monobook/IE70Fixes.css?116";</style><![endif]-->
+		<!--[if lt IE 7]><script type="text/javascript" src="/wiki/skins/common/IEFixes.js?116"></script>
+		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		<script type="text/javascript" async="" src="./SVD_html_files/watch.js"></script><script type="text/javascript">/*<![CDATA[*/
+var skin = "monobook";
+var stylepath = "/wiki/skins";
+var wgArticlePath = "/wiki/index.php?title=$1";
+var wgScriptPath = "/wiki";
+var wgScript = "/wiki/index.php";
+var wgServer = "http://www.machinelearning.ru";
+var wgCanonicalNamespace = "";
+var wgCanonicalSpecialPageName = false;
+var wgNamespaceNumber = 0;
+var wgPageName = "Простой_итерационный_алгоритм_сингулярного_разложения";
+var wgTitle = "Простой итерационный алгоритм сингулярного разложения";
+var wgAction = "view";
+var wgRestrictionEdit = [];
+var wgRestrictionMove = [];
+var wgArticleId = "646";
+var wgIsArticle = true;
+var wgUserName = null;
+var wgUserGroups = null;
+var wgUserLanguage = "ru";
+var wgContentLanguage = "ru";
+var wgBreakFrames = false;
+var wgCurRevisionId = "4393";
+var wgVersion = "1.12.0";
+var wgEnableAPI = true;
+var wgEnableWriteAPI = false;
+/*]]>*/</script>
+                
+		<script type="text/javascript" src="./SVD_html_files/wikibits.js"><!-- wikibits js --></script><link rel="stylesheet" type="text/css" href="./SVD_html_files/KHTMLFixes.css">
+		<!-- Head Scripts -->
+		<script type="text/javascript" src="./SVD_html_files/ajax.js"></script>
+		<script type="text/javascript" src="./SVD_html_files/index.php"><!-- site js --></script>
+		<style type="text/css">/*<![CDATA[*/
+@import "/wiki/index.php?title=MediaWiki:Common.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "/wiki/index.php?title=MediaWiki:Monobook.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "/wiki/index.php?title=-&action=raw&gen=css&maxage=18000";
+/*]]>*/</style>
+	</head>
+<body class="mediawiki ns-0 ltr page-Простой_итерационный_алгоритм_сингулярного_разложения vsc-initialized">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">Простой итерационный алгоритм сингулярного разложения</h1>
+		<div id="bodyContent">
+			<h3 id="siteSub">Материал из MachineLearning.</h3>
+			<div id="contentSub">(Перенаправлено с <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2&amp;redirect=no" title="Сингулярное разложение тензоров">Сингулярное разложение тензоров</a>)</div>
+									<div id="jump-to-nav">Перейти к: <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#column-one">навигация</a>, <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#searchInput">поиск</a></div>			<!-- start content -->
+			<p><b>Простой итерационный алгоритм сингулярного разложения матриц</b> допускает простую высокопараллельную (в том числе, нейросетевую) реализацию. <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5" title="Сингулярное разложение">Сингулярное разложение</a> матриц (англ. <a href="http://en.wikipedia.org/wiki/Singular_value_decomposition" class="external text" title="http://en.wikipedia.org/wiki/Singular_value_decomposition" rel="nofollow">Singular value decomposition</a>) необходимо для решения многих задач анализа данных. В том числе, <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D1%8B%D1%85_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82" title="Метод главных компонент">анализ главных компонент</a> сводится к сингулярному разложению матрицы центрированных данных.
+</p>
+<table id="toc" class="toc" summary="Содержание"><tbody><tr><td><div id="toctitle"><h2>Содержание</h2> <span class="toctoggle">[<a id="togglelink" class="internal" href="javascript:toggleToc()">убрать</a>]</span></div>
+<ul>
+<li class="toclevel-1"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#.D0.98.D0.B4.D0.B5.D1.8F_.D1.81.D0.B8.D0.BD.D0.B3.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D0.BE.D0.B3.D0.BE_.D1.80.D0.B0.D0.B7.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D1.8F_.D0.BC.D0.B0.D1.82.D1.80.D0.B8.D1.86.D1.8B_.D0.B4.D0.B0.D0.BD.D0.BD.D1.8B.D1.85"><span class="tocnumber">1</span> <span class="toctext">Идея сингулярного разложения матрицы данных</span></a></li>
+<li class="toclevel-1"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#.D0.9F.D1.80.D0.BE.D1.81.D1.82.D0.BE.D0.B9_.D0.B8.D1.82.D0.B5.D1.80.D0.B0.D1.86.D0.B8.D0.BE.D0.BD.D0.BD.D1.8B.D0.B9_.D0.B0.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC_.D1.81.D0.B8.D0.BD.D0.B3.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D0.BE.D0.B3.D0.BE_.D1.80.D0.B0.D0.B7.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D1.8F"><span class="tocnumber">2</span> <span class="toctext">Простой итерационный алгоритм сингулярного разложения</span></a></li>
+<li class="toclevel-1"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#.D0.A1.D0.B8.D0.BD.D0.B3.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D0.BE.D0.B5_.D1.80.D0.B0.D0.B7.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D0.B5_.D1.82.D0.B5.D0.BD.D0.B7.D0.BE.D1.80.D0.BE.D0.B2_.D0.B8_.D1.82.D0.B5.D0.BD.D0.B7.D0.BE.D1.80.D0.BD.D1.8B.D0.B9_.D0.BC.D0.B5.D1.82.D0.BE.D0.B4_.D0.B3.D0.BB.D0.B0.D0.B2.D0.BD.D1.8B.D1.85_.D0.BA.D0.BE.D0.BC.D0.BF.D0.BE.D0.BD.D0.B5.D0.BD.D1.82"><span class="tocnumber">3</span> <span class="toctext">Сингулярное разложение тензоров и тензорный метод главных компонент</span></a></li>
+<li class="toclevel-1"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#.D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.87.D0.B0.D0.BD.D0.B8.D1.8F"><span class="tocnumber">4</span> <span class="toctext">Примечания</span></a></li>
+</ul>
+</td></tr></tbody></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "показать"; var tocHideText = "убрать"; showTocToggle(); } </script>
+<a name=".D0.98.D0.B4.D0.B5.D1.8F_.D1.81.D0.B8.D0.BD.D0.B3.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D0.BE.D0.B3.D0.BE_.D1.80.D0.B0.D0.B7.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D1.8F_.D0.BC.D0.B0.D1.82.D1.80.D0.B8.D1.86.D1.8B_.D0.B4.D0.B0.D0.BD.D0.BD.D1.8B.D1.85"></a><h2> <span class="mw-headline"> Идея сингулярного разложения матрицы данных </span></h2>
+<p>Если <img src="./SVD_html_files/saved_resource" alt="\operatorname{X}=\left\{x_1,..., x_m \right\}^T"> — матрица, составленная из векторов-строк центрированных данных, то выборочная ковариационная матрица <img src="./SVD_html_files/saved_resource(1)" alt=" C = \frac{1}{m-1}\operatorname{X}^T\operatorname{X}"> и задача о спектральном разложении ковариационной матрицы <img src="./SVD_html_files/saved_resource(2)" alt=" C "> превращается в задачу о <i>сингулярном разложении</i> матрицы данных <img src="./SVD_html_files/saved_resource(3)" alt="\operatorname{X}">. 
+</p><p>Число <img src="./SVD_html_files/saved_resource(4)" alt=" \sigma \geq 0 "> называется <b>сингулярным числом</b> матрицы <img src="./SVD_html_files/saved_resource(3)" alt="\operatorname{X}"> тогда и только тогда, когда существуют <b>правый и левый сингулярные векторы</b>: такие <img src="./SVD_html_files/saved_resource(5)" alt="m">-мерный вектор-строка <img src="./SVD_html_files/saved_resource(6)" alt="b_{\sigma}"> и <img src="./SVD_html_files/saved_resource(7)" alt="n">-мерный вектор-столбец <img src="./SVD_html_files/saved_resource(8)" alt="a_{\sigma}"> (оба единичной длины), что выполнено два равенства:
+</p>
+<dl><dd> <img src="./SVD_html_files/saved_resource(9)" alt="\operatorname{X} a_{\sigma} = \sigma b_{\sigma}^T \;;\, \, b_{\sigma} \operatorname{X}= \sigma a_{\sigma}^T.">
+</dd></dl>
+<p>Пусть <img src="./SVD_html_files/saved_resource(10)" alt="p= \operatorname{rang} \operatorname{X} \leq \min\{n,m\}"> — <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A0%D0%B0%D0%BD%D0%B3_%D0%BC%D0%B0%D1%82%D1%80%D0%B8%D1%86%D1%8B&amp;action=edit" class="new" title="Ранг матрицы">ранг матрицы</a> данных. <b>Сингулярное разложение</b> матрицы данных <img src="./SVD_html_files/saved_resource(3)" alt="\operatorname{X}"> — это её представление в виде
+</p>
+<dl><dd> <img src="./SVD_html_files/saved_resource(11)" alt="\operatorname{X}= \sum_{l=1}^p \sigma_l b_l^T a_l^T \;; \;\operatorname{X}^T= \sum_{l=1}^p \sigma_l a_l b_l \; \left(x_{ij}=\sum_{l=1}^p \sigma_l b_{li}a_{lj}\right),">
+</dd></dl>
+<p>где <img src="./SVD_html_files/saved_resource(12)" alt="\sigma_l &gt; 0"> — сингулярное число, <img src="./SVD_html_files/saved_resource(13)" alt="a_l=(a_{li}), \, i=1,... n"> — соответствующий правый сингулярный вектор-столбец, а <img src="./SVD_html_files/saved_resource(14)" alt="b_l=(b_{li}), \, i=1,... m"> — соответствующий левый сингулярный вектор-строка (<img src="./SVD_html_files/saved_resource(15)" alt="l=1,...p">). Правые сингулярные векторы-столбцы <img src="./SVD_html_files/saved_resource(16)" alt="a_l">, участвующие в этом разложении, являются векторами главных компонент и собственными векторами эмпирической ковариационной матрицы
+<img src="./SVD_html_files/saved_resource(17)" alt="C =\frac{1}{m-1}\operatorname{X} ^T \operatorname{X} ">, отвечающими положительным собственным числам <img src="./SVD_html_files/saved_resource(18)" alt=" \lambda_l=\frac{1}{m-1}\sigma_l^2 &gt; 0 ">. 
+</p><p>Хотя формально задачи сингулярного разложения матрицы данных и спектрального разложения ковариационной матрицы совпадают, <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC" title="Алгоритм">алгоритмы</a> вычисления сингулярного разложения напрямую, без вычисления спектра ковариационной матрицы, более эффективны и устойчивы <sup id="cite_ref-0" class="reference"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#cite_note-0" title="">[1]</a></sup>. Это следует из того, что задача сингулярного разложения матрицы <img src="./SVD_html_files/saved_resource(3)" alt="\operatorname{X}"> лучше обусловлена, чем задача разложения матрицы <img src="./SVD_html_files/saved_resource(17)" alt="C =\frac{1}{m-1}\operatorname{X} ^T \operatorname{X} ">: для ненулевых собственных и сингулярных чисел
+</p>
+<dl><dd><img src="./SVD_html_files/saved_resource(19)" alt="\frac{\lambda_{\max}}{\lambda_{\min}}= \left(\frac{\sigma_{\max}}{\sigma_{\min}}\right)^2.">
+</dd></dl>
+<p>Теория сингулярного разложения была создана Дж. Дж. Сильвестром (англ. <a href="http://en.wikipedia.org/wiki/James_Joseph_Sylvester" class="external text" title="http://en.wikipedia.org/wiki/James_Joseph_Sylvester" rel="nofollow">J. J. Sylvester</a>) в 1889 г. и изложена во всех подробных руководствах по теории матриц <sup id="cite_ref-0" class="reference"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#cite_note-0" title="">[1]</a></sup>.
+</p>
+<a name=".D0.9F.D1.80.D0.BE.D1.81.D1.82.D0.BE.D0.B9_.D0.B8.D1.82.D0.B5.D1.80.D0.B0.D1.86.D0.B8.D0.BE.D0.BD.D0.BD.D1.8B.D0.B9_.D0.B0.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC_.D1.81.D0.B8.D0.BD.D0.B3.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D0.BE.D0.B3.D0.BE_.D1.80.D0.B0.D0.B7.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D1.8F"></a><h2> <span class="mw-headline"> Простой итерационный алгоритм сингулярного разложения </span></h2>
+<p>Основная процедура — поиск наилучшего приближения произвольной <img src="./SVD_html_files/saved_resource(20)" alt="m \times n"> матрицы <img src="./SVD_html_files/saved_resource(21)" alt="X=(x_{ij})"> матрицей вида <img src="./SVD_html_files/saved_resource(22)" alt="b \otimes a = (b_i a_j)"> (где <img src="./SVD_html_files/saved_resource(23)" alt="b"> — <img src="./SVD_html_files/saved_resource(5)" alt="m">-мерный вектор, а <img src="./SVD_html_files/saved_resource(24)" alt="a"> — <img src="./SVD_html_files/saved_resource(7)" alt="n">-мерный вектор) методом наименьших квадратов:
+</p>
+<dl><dd> <img src="./SVD_html_files/saved_resource(25)" alt="F(b, a) = \frac{1}{2}\sum_{i=1}^m \sum_{j=1}^n (x_{ij} - b_i a_j )^2 \to \min">
+</dd></dl>
+<p>Решение этой задачи дается последовательными итерациями по явным формулам. При фиксированном векторе <img src="./SVD_html_files/saved_resource(26)" alt="a=(a_j) "> значения <img src="./SVD_html_files/saved_resource(27)" alt="b=(b_i) ">, доставляющие минимум форме <img src="./SVD_html_files/saved_resource(28)" alt="F(b, a) ">, однозначно и явно определяются из равенств <img src="./SVD_html_files/saved_resource(29)" alt="\partial F/ \partial b_i = 0">&nbsp;:
+</p>
+<dl><dd> <img src="./SVD_html_files/saved_resource(30)" alt="\frac{\partial F}{\partial b_i} = - \sum_{j=1}^n (x_{ij} - b_i a_j )a_j = 0; \;\; b_i = \frac{\sum_{j=1}^n x_{ij}  a_j}{\sum_{j=1}^n a_j^2 }\, . ">
+</dd></dl>
+<p>Аналогично, при фиксированном векторе <img src="./SVD_html_files/saved_resource(31)" alt="b =(b_ i) "> определяются значения <img src="./SVD_html_files/saved_resource(26)" alt="a=(a_j) ">:
+</p>
+<dl><dd> <img src="./SVD_html_files/saved_resource(32)" alt="a_j = \frac{\sum_{i=1}^m b_i x_{ij} }{\sum_{i =1}^m b_i ^2 }\, . ">
+</dd></dl>
+<p>B качестве начального приближения вектора <img src="./SVD_html_files/saved_resource(24)" alt="a"> возьмем случайный вектор единичной длины, вычисляем вектор <img src="./SVD_html_files/saved_resource(23)" alt="b">, далее для этого вектора <img src="./SVD_html_files/saved_resource(23)" alt="b"> вычисляем вектор <img src="./SVD_html_files/saved_resource(24)" alt="a"> и т. д. Каждый шаг уменьшает значение <img src="./SVD_html_files/saved_resource(28)" alt="F(b, a) ">. В качестве критерия остановки используется малость относительного уменьшения значения минимизируемого функционала <img src="./SVD_html_files/saved_resource(28)" alt="F(b, a) "> за шаг итерации (<img src="./SVD_html_files/saved_resource(33)" alt="\Delta F / F ">) или малость самого значения <img src="./SVD_html_files/saved_resource(34)" alt="F">.
+</p><p>В результате для матрицы <img src="./SVD_html_files/saved_resource(21)" alt="X=(x_{ij})"> получили наилучшее приближение матрицей <img src="./SVD_html_files/saved_resource(35)" alt="P_1"> вида <img src="./SVD_html_files/saved_resource(36)" alt="b^1 \otimes a^1 = (b_i^1  a_j^1)"> (здесь верхним индексом обозначен номер итерации). Далее, из матрицы <img src="./SVD_html_files/saved_resource(37)" alt="X"> вычитаем полученную матрицу <img src="./SVD_html_files/saved_resource(35)" alt="P_1">, и для полученной матрицы уклонений <img src="./SVD_html_files/saved_resource(38)" alt="X_1=X-P_1"> вновь ищем наилучшее приближение <img src="./SVD_html_files/saved_resource(39)" alt="P_2"> этого же вида и т. д., пока, например, норма <img src="./SVD_html_files/saved_resource(40)" alt="X_k"> не станет достаточно малой. В результате получили итерационную процедуру разложения матрицы <img src="./SVD_html_files/saved_resource(37)" alt="X"> в виде суммы матриц ранга 1, то есть <img src="./SVD_html_files/saved_resource(41)" alt="X=P_1+P_2+... +P_q  \;  (P_l = b^l \otimes a^l) "> . Полагаем <img src="./SVD_html_files/saved_resource(42)" alt=" \sigma_l = \|a^l\| \|b^l\|"> и нормируем векторы <img src="./SVD_html_files/saved_resource(43)" alt=" a^l \, , \, b^l">: <img src="./SVD_html_files/saved_resource(44)" alt="a^l:= a^l/ \| a^l\|; \, \, b^l:= b^l/ \| b^l\|."> В результате получена аппроксимация сингулярных чисел <img src="./SVD_html_files/saved_resource(45)" alt=" \sigma_l "> и сингулярных векторов (правых — <img src="./SVD_html_files/saved_resource(46)" alt=" a^l"> и левых — <img src="./SVD_html_files/saved_resource(47)" alt="b^l">).
+</p><p>К достоинствам этого алгоритма относится его исключительная простота и возможность почти без изменений перенести его на данные с пробелами<sup id="cite_ref-0" class="reference"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5_%D1%82%D0%B5%D0%BD%D0%B7%D0%BE%D1%80%D0%BE%D0%B2#cite_note-0" title="">[1]</a></sup>, а также взвешенные данные.
+</p><p>Существуют различные модификации базового алгоритма, улучшающие точность и устойчивость. Например, векторы главных компонент <img src="./SVD_html_files/saved_resource(48)" alt="a^l"> при разных <img src="./SVD_html_files/saved_resource(49)" alt="l"> должны быть ортогональны «по построению», однако при большом числе итерации (большая размерность, много компонент) малые отклонения от ортогональности накапливаются и может потребоваться специальная коррекция <img src="./SVD_html_files/saved_resource(48)" alt="a^l"> на каждом шаге, обеспечивающая его ортогональность ранее найденным главным компонентам.
+</p><p>Для квадратных симметричных положительно определённых матриц описанный алгоритм превращается в метод прямых итераций для поиска собственных векторов.
+</p>
+<a name=".D0.A1.D0.B8.D0.BD.D0.B3.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D0.BE.D0.B5_.D1.80.D0.B0.D0.B7.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D0.B5_.D1.82.D0.B5.D0.BD.D0.B7.D0.BE.D1.80.D0.BE.D0.B2_.D0.B8_.D1.82.D0.B5.D0.BD.D0.B7.D0.BE.D1.80.D0.BD.D1.8B.D0.B9_.D0.BC.D0.B5.D1.82.D0.BE.D0.B4_.D0.B3.D0.BB.D0.B0.D0.B2.D0.BD.D1.8B.D1.85_.D0.BA.D0.BE.D0.BC.D0.BF.D0.BE.D0.BD.D0.B5.D0.BD.D1.82"></a><h2> <span class="mw-headline"> Сингулярное разложение тензоров и тензорный метод главных компонент </span></h2>
+<p>Часто вектор данных имеет дополнительную структуру прямоугольной таблицы (например, плоское изображение) или даже многомерной таблицы - то есть <a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A2%D0%B5%D0%BD%D0%B7%D0%BE%D1%80&amp;action=edit" class="new" title="Тензор">тензора</a>: <img src="./SVD_html_files/saved_resource(50)" alt="x_{i_{1}i_{2}...i_{q}}">, <img src="./SVD_html_files/saved_resource(51)" alt="1 \leq i_{j} \leq n_j">. В этом случае также эффективно применять сингулярное разложение. Определение, основные формулы и алгоритмы переносятся практически без изменений: вместо матрицы данных имеем <img src="./SVD_html_files/saved_resource(52)" alt="q+1">-индексную величину <img src="./SVD_html_files/saved_resource(53)" alt="\operatorname{X}=(x_{i_{0}i_{1}i_{2}...i_{q}})">, где первый индекс <img src="./SVD_html_files/saved_resource(54)" alt="i_{0}">-номер точки (тензора) данных.
+</p><p>Основная процедура — поиск наилучшего приближения тензора <img src="./SVD_html_files/saved_resource(55)" alt="x_{i_{0}i_{1}i_{2}...i_{q}}"> тензором вида <img src="./SVD_html_files/saved_resource(56)" alt="a^0_{i_{0}} a^1_{i_{1}}a^2_{i_{2}}...a^q_{i_{q}}"> (где <img src="./SVD_html_files/saved_resource(57)" alt="a^0=(a^0_{i_{0}})"> — <img src="./SVD_html_files/saved_resource(5)" alt="m">-мерный вектор (<img src="./SVD_html_files/saved_resource(5)" alt="m"> - число точек данных), <img src="./SVD_html_files/saved_resource(58)" alt="a^l=(a^l_{i_{l}})"> — вектор размерности <img src="./SVD_html_files/saved_resource(59)" alt="n_l"> при <img src="./SVD_html_files/saved_resource(60)" alt="l&gt;0">) методом наименьших квадратов:
+</p>
+<dl><dd><img src="./SVD_html_files/saved_resource(61)" alt="F= \frac{1}{2}\sum_{i_{0}=1}^m \sum_{i_{1}=1}^{n_1}...\sum_{i_{q}=1}^{n_q} (x_{i_{0}i_{1}...i_{q}} - a^0_{i_{0}} a^1_{i_{1}}...a^q_{i_{q}})^2 \to \min">
+</dd></dl>
+<p>Решение этой задачи дается последовательными итерациями по явным формулам. Если заданы все векторы-сомножители кроме одного <img src="./SVD_html_files/saved_resource(62)" alt="a^k_{i_{k}}">, то этот оставшийся определяется явно из достаточных условий минимума. 
+</p>
+<dl><dd><img src="./SVD_html_files/saved_resource(63)" alt="a^k_{i_{k}}= \frac{\sum_{i_{0}=1}^m \sum_{i_{1}=1}^{n_1}... \sum_{i_{k-1}=1}^{n_{k-1}}\sum_{i_{k+1}=1}^{n_{k+1}}...\sum_{i_{q}=1}^{n_{q}}x_{i_{0}i_{1}...i_{k-1}i_{k}i_{k+1}...i_{q}} a^0_{i_{0}}a^{k-1}_{i_{k-1}}a^{k+1}_{i_{k+1}}...a^q_{i_{q}}}{\prod_{j\neq k}\|a^j\|^2 }\, . ">
+</dd></dl>
+<p>B качестве начального приближения векторов <img src="./SVD_html_files/saved_resource(58)" alt="a^l=(a^l_{i_{l}})"> (<img src="./SVD_html_files/saved_resource(60)" alt="l&gt;0">) возьмем случайные векторы единичной длины, вычислим вектор <img src="./SVD_html_files/saved_resource(64)" alt="a^0">, далее для этого вектора <img src="./SVD_html_files/saved_resource(64)" alt="a^0"> и данных векторов <img src="./SVD_html_files/saved_resource(65)" alt="a^2 , a^3, ...">вычисляем вектор <img src="./SVD_html_files/saved_resource(66)" alt="a^1"> и т. д. (циклически перебирая индексы) Каждый шаг уменьшает значение <img src="./SVD_html_files/saved_resource(28)" alt="F(b, a)">. Алгоритм, очевидно, сходится. В качестве критерия остановки используется малость относительного уменьшения значения минимизируемого функционала <img src="./SVD_html_files/saved_resource(34)" alt="F"> за цикл или малость самого значения <img src="./SVD_html_files/saved_resource(34)" alt="F">. Далее, из тензора <img src="./SVD_html_files/saved_resource(67)" alt="\operatorname {X}"> вычитаем полученное приближение <img src="./SVD_html_files/saved_resource(56)" alt="a^0_{i_{0}} a^1_{i_{1}}a^2_{i_{2}}...a^q_{i_{q}}"> и для остатка вновь ищем наилучшее приближение этого же вида и т. д., пока, например, норма очередного остатка не станет достаточно малой. 
+</p><p>Это многокомпонентное сингулярное разложение (тензорный метод главных компонент) успешно применяется при обработка изображений, видеосигналов, и, шире, любых данных, имеющих табличную или тензорную структуру.
+</p><p><br>
+</p>
+<a name=".D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.87.D0.B0.D0.BD.D0.B8.D1.8F"></a><h2> <span class="mw-headline"> Примечания </span></h2>
+<p><br>
+</p>
+<div class="notice metadata" id="stub" style="clear:all; margin-top:1em; margin-bottom:1em;">
+<table align="center" cellpadding="10px" cellspacing="4" style="background-color: #F5F5F5; border: 1px solid #AAAAAA;">
+<tbody><tr>
+<td><i>Это <a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%91%D0%BE%D0%BB%D0%B2%D0%B0%D0%BD%D0%BA%D0%B0_%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8" title="MachineLearning:Болванка статьи">незавершённая статья</a></i>. <i>Вы <a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D0%B0%D0%B6" title="MachineLearning:Инструктаж">поможете</a> проекту, <span class="plainlinks"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;action=edit" class="external text" title="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;action=edit" rel="nofollow">исправив и дополнив</a></span> её</i>.
+</td></tr></tbody></table>
+</div>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 331/1000000
+Post-expand include size: 1371/2097152 bytes
+Template argument size: 0/2097152 bytes
+#ifexist count: 0/100
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:646-0!1!0!!ru!2!edit=0 and timestamp 20230115123204 -->
+<div class="printfooter">
+Источник — «<a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F">http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F</a>»</div>
+			<div id="catlinks"><p class="catlinks"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Categories" title="Служебная:Categories">Категории</a>: <span dir="ltr"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9D%D0%B5%D0%B7%D0%B0%D0%B2%D0%B5%D1%80%D1%88%D1%91%D0%BD%D0%BD%D1%8B%D0%B5_%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8" title="Категория:Незавершённые статьи">Незавершённые статьи</a></span> | <span dir="ltr"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D1%8B%D1%85_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82" title="Категория:Метод главных компонент">Метод главных компонент</a></span> | <span dir="ltr"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%A0%D0%B5%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7" title="Категория:Регрессионный анализ">Регрессионный анализ</a></span> | <span dir="ltr"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%98%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85" title="Категория:Интеллектуальный анализ данных">Интеллектуальный анализ данных</a></span> | <span dir="ltr"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9C%D0%B0%D1%88%D0%B8%D0%BD%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5" title="Категория:Машинное обучение">Машинное обучение</a></span> | <span dir="ltr"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%AD%D0%BD%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F_%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85" title="Категория:Энциклопедия анализа данных">Энциклопедия анализа данных</a></span></p></div>			<!-- end content -->
+			<div class="visualClear"></div>
+		</div>
+	</div>
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Просмотры</h5>
+		<div class="pBody">
+			<ul>
+					 <li id="ca-nstab-main" class="selected"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F" title="Содержание статьи [ctrl-c]" accesskey="c">Статья</a></li>
+					 <li id="ca-talk" class="new"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9E%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5:%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;action=edit" title="Обсуждение содержания страницы [ctrl-t]" accesskey="t">Обсуждение</a></li>
+					 <li id="ca-viewsource"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;action=edit" title="Эта страница защищена от изменений, но вы можете посмотреть и скопировать её исходный текст [ctrl-e]" accesskey="e">Просмотр</a></li>
+					 <li id="ca-history"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;action=history" title="Журнал изменений страницы [ctrl-h]" accesskey="h">История</a></li>
+				</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Личные инструменты</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Userlogin&amp;returnto=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F" title="Здесь можно зарегистрироваться в системе, но это необязательно [ctrl-o]" accesskey="o">Представиться системе</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(/wiki/logo.png);" href="http://www.machinelearning.ru/wiki/index.php?title=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0" title="Перейти на заглавную страницу [ctrl-z]" accesskey="z"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class="portlet" id="p-navigation">
+		<h5>Навигация</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-mainpage"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0" title="Перейти на заглавную страницу [ctrl-z]" accesskey="z">Заглавная страница</a></li>
+				<li id="n-portal"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%9F%D0%BE%D1%80%D1%82%D0%B0%D0%BB_%D1%81%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B0" title="О проекте, о том, что вы можете сделать, где что находится">Сообщество</a></li>
+				<li id="n-.D0.9D.D0.BE.D0.B2.D0.BE.D1.81.D1.82.D0.B8"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D0%9D%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8">Новости</a></li>
+				<li id="n-.D0.9F.D0.BE.D1.81.D0.BB.D0.B5.D0.B4.D0.BD.D0.B8.D0.B5-.D0.BF.D1.80.D0.B0.D0.B2.D0.BA.D0.B8"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Recentchanges">Последние правки</a></li>
+				<li id="n-randompage"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Random" title="Посмотреть случайную страницу [ctrl-x]" accesskey="x">Случайная статья</a></li>
+				<li id="n-help"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0:%D0%A1%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0" title="Справочник по проекту «MachineLearning»">Справка</a></li>
+				<li id="n-.D0.98.D0.BD.D1.81.D1.82.D1.80.D1.83.D0.BA.D1.82.D0.B0.D0.B6"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D0%B0%D0%B6">Инструктаж</a></li>
+				<li id="n-.D0.92.D0.BE.D0.BF.D1.80.D0.BE.D1.81.D1.8B-.D0.B8-.D0.BE.D1.82.D0.B2.D0.B5.D1.82.D1.8B"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%A7%D0%B0%D0%92%D0%9E">Вопросы и ответы</a></li>
+				<li id="n-ToDo"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:ToDo">ToDo</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="portlet" id="p-.C2.A0">
+		<h5>&nbsp;</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-.D0.AD.D0.BD.D1.86.D0.B8.D0.BA.D0.BB.D0.BE.D0.BF.D0.B5.D0.B4.D0.B8.D1.8F-.D0.B0.D0.BD.D0.B0.D0.BB.D0.B8.D0.B7.D0.B0-.D0.B4.D0.B0.D0.BD.D0.BD.D1.8B.D1.85"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%AD%D0%BD%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F_%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85">Энциклопедия анализа данных</a></li>
+				<li id="n-.D0.9F.D0.BE.D0.BF.D1.83.D0.BB.D1.8F.D1.80.D0.BD.D1.8B.D0.B5-.D0.B8-.D0.BE.D0.B1.D0.B7.D0.BE.D1.80.D0.BD.D1.8B.D0.B5-.D1.81.D1.82.D0.B0.D1.82.D1.8C.D0.B8"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9F%D0%BE%D0%BF%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D1%8B%D0%B5_%D0%B8_%D0%BE%D0%B1%D0%B7%D0%BE%D1%80%D0%BD%D1%8B%D0%B5_%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8">Популярные и обзорные статьи</a></li>
+				<li id="n-.D0.9F.D1.83.D0.B1.D0.BB.D0.B8.D0.BA.D0.B0.D1.86.D0.B8.D0.B8"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9F%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8">Публикации</a></li>
+				<li id="n-.D0.9F.D0.BE.D0.BB.D0.B5.D0.B7.D0.BD.D1.8B.D0.B5-.D1.81.D1.81.D1.8B.D0.BB.D0.BA.D0.B8"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5_%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8">Полезные ссылки</a></li>
+			</ul>
+		</div>
+	</div>
+		<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Поиск</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Search" id="searchform"><div>
+				<input id="searchInput" name="search" type="text" title="Искать это слово [ctrl-f]" accesskey="f" value="">
+				<input type="submit" name="go" class="searchButton" id="searchGoButton" value="Перейти" title="Перейти к странице, имеющей в точности такое название">&nbsp;
+				<input type="submit" name="fulltext" class="searchButton" id="mw-searchButton" value="Найти" title="Найти страницы, содержащие указанный текст">
+			</div></form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Инструменты</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Whatlinkshere/%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F" title="Список всех страниц, которые ссылаются на эту страницу [ctrl-j]" accesskey="j">Ссылки сюда</a></li>
+				<li id="t-recentchangeslinked"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Recentchangeslinked/%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F" title="Последние изменения в страницах, на которые ссылается эта страница [ctrl-k]" accesskey="k">Связанные правки</a></li>
+<li id="t-upload"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Upload" title="Загрузить изображения или мультимедиа-файлы [ctrl-u]" accesskey="u">Загрузить файл</a></li>
+<li id="t-specialpages"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Specialpages" title="Список служебных страниц [ctrl-q]" accesskey="q">Спецстраницы</a></li>
+				<li id="t-print"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;printable=yes" title="Версия для печати этой страницы [ctrl-p]" accesskey="p">Версия для печати</a></li>				<li id="t-permalink"><a href="http://www.machinelearning.ru/wiki/index.php?title=%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9_%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%B8%D0%BD%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B3%D0%BE_%D1%80%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F&amp;oldid=4393" title="Постоянная ссылка на эту версию страницы">Постоянная ссылка</a></li>			</ul>
+		</div>
+	</div>
+		</div><!-- end of the left (by default at least) column -->
+			<div class="visualClear"></div>
+			<div id="footer">
+				<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="./SVD_html_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki"></a></div>
+				<div id="f-copyrightico"><a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="./SVD_html_files/cc-logo.png" alt="Creative Commons Attribution/Share-Alike"></a></div>
+			<ul id="f-list">
+				<li id="lastmod"> Последнее изменение этой страницы: 09:43, 18 октября 2008.</li>
+				<li id="viewcount">К этой странице обращались 36&nbsp;111 раз.</li>
+				<li id="copyright">Содержимое доступно в соответствии с <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="external " title="http://creativecommons.org/licenses/by-sa/3.0/" rel="nofollow">Creative Commons Attribution/Share-Alike</a>.</li>
+				<li id="privacy"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%9F%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B4%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8" title="MachineLearning:Политика конфиденциальности">Политика конфиденциальности</a></li>
+				<li id="about"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5" title="MachineLearning:Описание">Описание MachineLearning</a></li>
+				<li id="disclaimer"><a href="http://www.machinelearning.ru/wiki/index.php?title=MachineLearning:%D0%9E%D1%82%D0%BA%D0%B0%D0%B7_%D0%BE%D1%82_%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8" title="MachineLearning:Отказ от ответственности">Отказ от ответственности</a></li>
+			</ul>
+		</div>
+		
+	
+		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./SVD_html_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-4591433-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script><!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setCookieDomain", "*.machinelearning.ru"]);
+  _paq.push(["setDomains", ["*.machinelearning.ru","*.www.machinelearning.ru"]]);
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://s.inmedias.ru/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "3]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><img src="http://s.inmedias.ru/piwik.php?idsite=3&amp;rec=1" style="border:0" alt="" /></noscript>
+<!-- End Piwik Code --><!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter30907996 = new Ya.Metrika({id:30907996,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/30907996" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter --></div>
+<!-- Served in 0.069 secs. -->
+</body></html>

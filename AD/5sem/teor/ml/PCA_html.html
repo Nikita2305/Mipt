@@ -1,0 +1,1305 @@
+
+<!-- saved from url=(0049)https://rcs.chemometrics.ru/old/Tutorials/pca.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+
+<meta http-equiv="Content-Language" content="ru">
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Метод главных компонент</title>
+<style>
+<!--
+h1           {
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: Center;
+	padding-top: 75px;
+}
+#menu        { font-family: Tahoma; font-size: 12pt; font-weight: bold }
+h2           {
+	font-family: Arial;
+	font-size: 12pt;
+	font-style: italic;
+	padding-top: 25px;
+}
+.header      { font-family: Arial; font-size: 18pt; letter-spacing: 1; font-weight: bold; 
+               text-align: Center }
+.style1 {
+	text-align: center;
+}
+.style3 {
+	vertical-align: middle;
+}
+.prog {
+	font-family: "Courier New", Courier, monospace;
+}
+-->
+</style>
+        <title></title>
+</head>
+
+<body class="vsc-initialized">
+
+<p>&nbsp;</p>
+  <center>
+  <table border="0" width="95%" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td width="100%">
+
+      <h3 class="header"><b><span style="font-size:18.0pt;mso-bidi-font-size:
+12.0pt;font-family:Arial;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-ansi-language:
+RU;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">Метод Главных
+      Компонент (</span><span lang="EN-US" style="font-size:18.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA">PCA</span><span style="font-size:18.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-ansi-language:RU;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">)</span></b></h3>
+      <dl>
+        <div align="center">
+          <center>
+          <dt>©<span lang="en-us"> 2008 </span>Алексей
+        Померанцев&nbsp;</dt>
+          </center>
+        </div>
+        <div align="center">
+          <center>
+          <dt><a href="https://rcs.chemometrics.ru/old/index.html">Российское хемометрическое общество</a></dt>
+          </center>
+        </div>
+      </dl>
+        <h1><a name="Contents"></a>Содержание&nbsp;</h1>
+        <dl>
+          <dt><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch0">Введение&nbsp;</a></b></dt>
+          <dt><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch1">1. Базовые сведения&nbsp;</a></b></dt>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch1.1">1.1. Данные</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch1.2">1.2. Интуитивный подход&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch1.3">1.3. Понижение размерности</a></b></dd>
+          <dt><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2">2. Метод главных компонент</a></b></dt>
+          <dd><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.1"><b>2.1. Формальное описание&nbsp;</b></a></dd>
+          <dd><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.2"><b>2.2. Алгоритм</b></a></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.3">2.3. PCA и SVD</a></b></dd>
+          <dd><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.4"><b>2.4. Счета&nbsp;</b></a></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.5">2.5. Нагрузки&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.6">2.6. Данные специального
+            вида&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.7">2.7. Погрешности&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.8">2.8. Проверка&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.9">2.9. "Качество"
+            декомпозиции&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.10">2.10. Выбор числа главных
+            компонент&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.11">2.11. Неединственность
+            PCA&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.12">2.12. Подготовка данных</a></b></dd>
+			<dd><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.13"><span lang="en-us"><strong>2.13.</strong></span><strong> 
+			Размах и отклонение</strong></a></dd>
+          <dt><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.4"><b>3. Люди и страны</b></a></dt>
+          <dd><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.1"><b>3.1. Пример</b></a></dd>
+          <dd><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.2"><b>3.2. Данные</b></a></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.3">3.3. Исследование
+            данных&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.4">3.4. Подготовка данных&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.5">3.5. Вычисление счетов и
+            нагрузок&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.6">3.6. Графики счетов&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.7">3.7. Графики нагрузок&nbsp;</a></b></dd>
+          <dd><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.8">3.8. Исследование остатков&nbsp;</a></b></dd>
+          <dt><b><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch6">Заключение</a></b></dt>
+          <dd><a name="Ch0"></a>&nbsp;</dd>
+        </dl>
+        <h1>Введение&nbsp;</h1>
+      <p>В этом пособии рассказывается о методе
+      главных компонент (Principal Component Analysis, PCA) –
+      базовом подходе, применяемом в хемометрике для решения разнообразных
+      задач. Текст ориентирован, прежде всего,
+      на специалистов в области анализа
+      экспериментальных данных: химиков,
+      физиков, биологов, и т.д. Он может служить
+      пособием для исследователей, начинающих
+      изучение этого вопроса. Продолжить
+      изучение вопроса можно с помощью
+      указанной <a href="https://rcs.chemometrics.ru/old/Tutorials/references.htm">Литературы</a></p>
+        <p>В пособии интенсивно используются
+        понятия и методы матричной алгебры –
+        вектор, матрица, и т.п. Читателям,
+        которые плохо знакомы с этим аппаратом,
+        рекомендуется изучить, или, хотя бы
+        просмотреть, пособие "<a href="https://rcs.chemometrics.ru/old/Tutorials/matrix.htm">Матрицы и векторы</a>".&nbsp;</p>
+      <p>Изложение иллюстрируется примерами,
+      выполненными в рабочей книге Excel "<a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls"><em>People.xls</em></a>" 
+		которая сопровождает этот документ<span lang="en-us">.</span> Эта книга 
+		может работать без использования 
+<em>Chemometrics 
+Add-In</em>.</p>
+        <p align="center"><b><a href="https://rcs.chemometrics.ru/old/Tutorials/moffice.htm">Важная
+        информация о работе с
+              файлом People.xls</a></b></p>
+      <p>Ссылки на примеры помещены в текст как объекты Excel. По форме, эти 
+		примеры имеют абстрактный, модельный характер, однако, по сути, они 
+		тесно связаны с задачами, встречающимися на практике. Предполагается, 
+		что читатель имеет базовые навыки работы в среде Excel, умеет проводить 
+		простейшие матричные вычисления с использованием функций листа, таких 
+		как <span lang="EN-US" style="font-size:12.0pt;font-family:
+&quot;Times New Roman&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-ansi-language:
+EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">
+		<span class="prog">
+		<a href="https://rcs.chemometrics.ru/old/Tutorials/excel.htm#MMULT"><strong>MMULT</strong></a></span>,</span><span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-ansi-language:RU;mso-fareast-language:EN-US;mso-bidi-language:
+AR-SA"> </span><span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA"><span class="prog"><a href="https://rcs.chemometrics.ru/old/Tutorials/excel.htm#TREND">
+		<strong>TREND</strong></a></span>. </span>
+		Освежить эти знания можно с помощью пособия <a href="https://rcs.chemometrics.ru/old/Tutorials/excel.htm">Матричные операции в 
+			Excel</a>. </p>
+      <div class="style1">
+		<b><a href="https://rcs.chemometrics.ru/old/Tutorials/index.html">Другие 
+		пособия по хемометрике</a></b></div>
+          <p style="line-height: 150%"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a>
+          <a name="Ch1"></a>
+      </p><h1>1. Базовые сведения<a name="Ch1.1"></a> </h1>
+        <h2>1.1.&nbsp;Данные</h2>
+        <p>Метод главных компонент применяется
+        к данным, записанным в виде матрицы <b>X</b>
+        <span lang="EN-US"> –&nbsp;</span>прямоугольной таблицы чисел
+        размерностью <i>I</i> строк и <i>J</i>
+        столбцов.</p>
+        <p align="center"><samp><a name="Fig01"></a></samp>&nbsp;<img border="0" src="./PCA_html_files/fig01.gif" align="center" width="628" height="361"></p>
+      <p align="center"><samp>Рис. 1 Матрица
+      данных</samp></p>
+        <p>Традиционно строки этой матрицы
+        называются образцами. Они нумеруются
+        индексом <i>i</i>, меняющимся от 1 до <i>I</i>.
+        Столбцы называются переменными, и они
+        нумеруются индексом <i>j</i>= 1, …, <i>J</i>. </p>
+        <p>Цель PCA <span lang="EN-US"> –&nbsp;</span>извлечение из этих данных
+        нужной информации. Что является
+        информацией, зависит от сути решаемой
+        задачи. Данные могут содержать нужную
+        нам информацию, они даже могут быть
+        избыточными. Однако, в некоторых
+        случаях, информации в данных может не
+        быть совсем.&nbsp; </p>
+        <p>Размерность данных <span lang="EN-US"> –&nbsp;</span> число образцов и
+        переменных – имеет большое значение для
+        успешной добычи информации. Лишних
+        данных не бывает <span lang="EN-US"> –&nbsp;</span>лучше, когда их много,
+        чем мало. На практике это означает, что
+        если получен спектр какого–то образца,
+        то не нужно выбрасывать все точки,
+        кроме нескольких характерных длин волн,
+        а использовать их все, или, по крайней
+        мере, значительный кусок.&nbsp; </p>
+        <p>Данные всегда (или почти всегда)
+        содержат в себе нежелательную
+        составляющую, называемую шумом.
+        Природа этого шума может быть
+        различной, но, во многих случаях, шум –
+        это та часть данных, которая не
+        содержит искомой информации. Что
+        считать шумом, а что – информацией,
+        всегда решается с учетом поставленных
+        целей и методов, используемых для ее
+        достижения.&nbsp; </p>
+        <p>Шум и избыточность в данных
+        обязательно проявляют себя через
+        корреляционные связи между
+        переменными. Погрешности в данных
+        могут привести к появлению не
+        систематических, а случайных связей
+        между переменными. Понятие
+        эффективного (химического) ранга и
+        скрытых, латентных переменных, число
+        которых равно этому рангу, является
+        важнейшим понятием в PCA </p>
+        <p><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a></p>
+        <h2>1.2. Интуитивный подход </h2>
+        <p>Постараемся передать суть метода
+        главных компонент, используя
+        интуитивно–понятную геометрическую
+        интерпретацию. Начнем с простейшего
+        случая, когда имеются только две
+        переменные <i>x</i><sub>1</sub> и <i>x</i><sub>2</sub>.
+        Такие данные легко изобразить на
+        плоскости (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig02">Рис. 2</a>).</p>
+        <p align="center"><samp><a name="Fig02"></a></samp><img border="0" src="./PCA_html_files/fig02.gif" width="514" height="340">
+      </p><p align="center"><samp>Рис. 2 Графическое
+        представление двумерных данных</samp></p>
+        <p>Каждой строке исходной таблицы (т.е.
+        образцу) соответствует точка на
+        плоскости с соответствующими
+        координатами. Они обозначены пустыми
+        кружками на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig02">Рис. 2</a>. Проведем
+        через них прямую, так, чтобы вдоль нее
+        происходило максимальное изменение
+        данных. На рисунке эта прямая выделена
+        синим цветом; она называется первой
+        главной компонентой <span lang="EN-US"> –&nbsp;</span> PC1. Затем
+        спроецируем все исходные точки на эту
+        ось. Получившиеся точки закрашены
+        красным цветом. Теперь мы можем
+        предположить, что на самом деле все
+        наши экспериментальные точки и должны
+        были лежать на этой новой оси. Просто
+        какие–то неведомые силы отклонили их от
+        правильного, идеального положения, а мы
+        вернули их на место. Тогда все
+        отклонения от новой оси можно считать
+        шумом, т.е. ненужной нам информацией.
+        Правда, мы должны быть в этом уверены.
+        Проверить шум ли это, или все еще важная
+        часть данных, можно поступив с этими
+        остатками так же, как мы поступили с
+        исходными данными <span lang="EN-US"> –&nbsp;</span>найти в них ось
+        максимальных изменений. Она называется
+        второй главной компонентой (PC2). И так
+        надо действовать, до тех пор, пока шум
+        уже не станет действительно шумом, т.е.
+        случайным хаотическим набором величин.</p>
+        <p>В общем, многомерном случае, процесс
+        выделения главных компонент
+        происходит так:&nbsp;</p>
+      <ol>
+        <li>Ищется центр облака данных, и туда
+          переносится новое начало координат <span lang="EN-US"> –&nbsp;</span>
+          это нулевая главная компонента (PC0)&nbsp;</li>
+        <li>Выбирается направление
+          максимального изменения данных <span lang="EN-US"> –&nbsp;</span>это
+          первая главная компонента (PC1)&nbsp;</li>
+        <li>Если данные описаны не полностью (шум
+          велик), то выбирается еще одно
+          направление (PC2) <span lang="EN-US"> –&nbsp;</span>перпендикулярное к
+          первому, так чтобы описать оставшееся
+          изменение в данных и т.д.</li>
+      </ol>
+        <p align="center">&nbsp; <samp><a name="Fig03"></a></samp><img border="0" src="./PCA_html_files/data.gif" width="440" height="438"><img border="0" src="./PCA_html_files/fig03.gif" width="440" height="438">
+      </p><p align="center"><samp>Рис. 3 Графическое
+        представление метода главных
+        компонент</samp></p>
+        <p>В результате, мы переходим от
+        большого количества переменных к
+        новому представлению, размерность
+        которого значительно меньше. Часто
+        удается упростить данные на порядки: от
+        1000 переменных перейти всего к двум. При
+        этом ничего не выбрасывается – все
+        переменные учитываются. В то же время
+        несущественная для сути дела часть
+        данных отделяется, превращается в шум.
+        Найденные главные компоненты и дают
+        нам искомые скрытые переменные,
+        управляющие устройством данных.</p>
+        <p><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a></p>
+        <h2>1.3. Понижение размерности</h2>
+        <p>Суть метода главных компонент – это
+        существенное понижение размерности
+        данных. Исходная матрица <b>X</b>
+        заменяется двумя новыми матрицами <b>T</b>
+        и <b>P</b>, размерность которых, <i>A</i>,
+        меньше, чем число переменных (столбцов) <i>J</i>
+        у исходной матрицы <b>X</b>
+        </p><p align="center"><img border="0" src="./PCA_html_files/fig04.png" width="375" height="292">
+        </p><p align="center"><samp><a name="Fig04"></a>Рис. 4
+        Декомпозиция матрицы <b>X</b></samp></p>
+        <p align="left">Вторая размерность – число
+        образцов (строк) <i>I</i> сохраняется. Если
+        декомпозиция выполнена правильно –
+        размерность <i>A</i> выбрана верно, то
+        матрица <b>T</b> несет в себе столько же
+        информации, сколько ее было в начале, в
+        матрице <b>X</b>. При этом матрица <b>T</b>
+        меньше, и, стало быть, проще, чем <b>X</b>.
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2"></a>
+      </p><h1 align="left">2. Метод главных компонент <a name="Ch2.1"></a></h1>
+      <h2 align="left">2.1. Формальное описание</h2>
+      <p align="left">Пусть имеется матрица
+      переменных <b>X</b> размерностью (<i>I</i><span style="mso-ansi-language:RU">&#215;</span><i>J</i>), где <i>I</i> –
+      число образцов (строк), а <i>J</i> – это число
+      независимых переменных (столбцов),
+      которых, как правило, много (<i>J</i>&gt;&gt;1). В
+      методе главных компонент используются
+      новые, формальные переменные <b>t</b><sub>a</sub>
+      (<i>a</i>=1,…<i>A</i>), являющиеся линейной
+      комбинацией исходных переменных <b>x</b><i><sub>j</sub></i>
+      (<i>j</i>=1,…<i>J</i>)&nbsp;<br>
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center">&nbsp;&nbsp; <b><a name="Eq1"></a>t</b><sub><i>a</i></sub>=<b>p</b><sub><i>a</i>1</sub><b>x</b><sub>1</sub>+…
+                + <b>p</b><i><sub>aJ</sub></i><b>x</b><i><sub>J</sub></i></p></td>
+              <td>
+                <p align="center">(1)</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+        <p>С помощью этих новых переменных
+        матрица <b>X</b> разлагается в
+        произведение двух матриц <b>T</b> и <b>P</b> –<br>
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><a name="Eq2"></a><img border="0" src="./PCA_html_files/image01.gif" width="173" height="48"></p></td>
+              <td>
+                <p align="center">(2)</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+        <p>Матрица <b>T</b> называется матрицей <i>счетов</i>
+        (scores). Ее размерность (<i>I</i><span style="mso-ansi-language:RU">&#215;</span><i>A</i>).&nbsp;</p><p> Матрица <b>P</b>
+        называется матрицей <i>нагрузок</i> (loadings).
+        Ее размерность (<i>J</i><span style="mso-ansi-language:RU">&#215;</span><i>A</i><i></i>).&nbsp;
+        </p><p> <b>E</b> – это
+        матрица <i>остатков</i>, размерностью (<i>I</i><span style="mso-ansi-language:RU">&#215;</span><i>J</i>).
+        </p><p align="center"><samp><a name="Fig05"></a></samp><img border="0" src="./PCA_html_files/fig05.gif" width="818" height="192">
+        </p><p align="center">&nbsp;</p><p align="center"><samp>Рис.
+      5 Разложение по главным компонентам</samp></p>
+        <p>Новые переменные <b>t</b><i><sub>a</sub></i>
+        называются <i>главными компонентами</i> (Principal Components), поэтому 
+		и сам метод называется методом главных компонент (PCA). Число столбцов – <b>t</b><i><sub>a</sub></i> в матрице <b>T</b>,
+        и <b>p</b><i><sub>a</sub></i> в матрице <b>P</b>, равно <i>A</i>,
+        которое называется <i>числом главных
+        компонент</i> (PC). Эта величина заведомо
+        меньше числа переменных <i>J</i> и числа
+        образцов <i>I</i>.&nbsp;
+        </p><p>Важным свойством PCA является <i>ортогональность</i>
+        (независимость) главных компонент.
+        Поэтому матрица счетов <b>T</b> не
+        перестраивается при увеличении числа
+        компонент, а к ней просто прибавляется
+        еще один столбец – соответствующий
+        новому направлению. Тоже происходит и с
+        матрицей нагрузок <b>P</b>.
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.2"></a></p><h2 align="left">2.2. Алгоритм&nbsp;</h2>
+        <p>Чаще всего для построения PCA счетов и нагрузок,
+        используется рекуррентный алгоритм <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#Ch1.2">NIPALS</a>,
+        который на каждом шагу вычисляет одну
+        компоненту. Сначала исходная матрица <b>X</b>
+        преобразуется (как минимум – центрируется; см.
+        раздел <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.12">2.12</a>)&nbsp; и превращается в матрицу <b>E</b><sub>0</sub>, <i>a</i>=0.
+        Далее применяют следующий алгоритм.&nbsp;
+        </p><blockquote>
+          <dl>
+            <dd>1. Выбрать начальный вектор <b>t</b>&nbsp;</dd>
+            <dd>2. <b>p</b><sup>t</sup> = <b>t</b><sup>t</sup> <b>E</b><i><sub>a</sub></i>
+              / <b>t</b><sup>t</sup><b>t</b>&nbsp;</dd>
+            <dd>3. <b>p</b> = <b>p</b> / (<b>p</b><sup>t</sup><b>p</b>)<sup>&#189;</sup></dd>
+            <dd>4. <b>t</b> = <b>E</b><i><sub>a</sub></i> <b>p</b> / <b>p</b><sup>t</sup><b>p</b></dd>
+            <dd>5. Проверить сходимость, если нет,
+              то идти на 2</dd>
+          </dl>
+        </blockquote>
+        <p>После вычисления очередной (<i>a-</i>ой)
+        компоненты, полагаем <b>t</b><i><sub>a</sub></i>=<b>t</b>
+        и <b>p</b><i><sub>a</sub></i>=<b>p</b>. Для получения
+        следующей компоненты надо вычислить
+        остатки <b>E</b><sub><i>a</i>+1</sub> = <b>E</b><i><sub>a</sub></i>
+        – <b>t</b> <b>p</b><sup>t</sup> и применить к ним тот
+        же алгоритм, заменив индекс <i>a</i> на <i>a</i>+1.
+        Программа для реализации PCA в среде MatLab
+        приведена в пособии <a href="https://rcs.chemometrics.ru/old/Tutorials/matlab.htm#Ch5.3">MatLab.
+          Руководство для начинающих</a>&nbsp;.&nbsp;
+        </p><p>В этом пособии для построения PCA
+        используется специальная надстройка
+        для программы Excel (Add–In) <i>Chemometrics.xla</i>. Она
+        дополняет список стандартных функций
+        Excel и позволяет проводить PCA разложение
+        на листах рабочей книги. Подробности об
+        этой программе можно прочитать в
+        пособии <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm">Проекционные
+        методы в системе Excel.</a>
+        </p><p>После того, как построено
+        пространство из главных компонент,
+        новые образцы<b> X</b><sub>new </sub>могут быть
+        на него спроецированы, иными словами – определены матрицы их счетов <b>T</b><sub>new</sub>.
+        В методе PCA это делается очень просто&nbsp;
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><b><a name="Eq3"></a>T</b><sub>new</sub>.=. <b>X</b><sub>new</sub> <b>P</b>
+              </p></td>
+              <td>
+                <p align="center">(3)</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+        <p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.3"></a>
+        </p><h2 align="left">2.3. PCA и SVD</h2>
+      <p align="left">Метод главных компонент тесно связан с другим разложением 
+		– <a href="https://rcs.chemometrics.ru/old/Tutorials/matrix.htm#ch211"> по
+        сингулярным значениям, SVD</a>. В последнем
+        случае исходная матрица <b>X</b>
+        разлагается в произведение трех
+        матриц&nbsp;
+        </p><p align="center"><b>X</b>=<b>USV</b><sup>t</sup>&nbsp;
+        </p><p align="left">Здесь <b>U</b> – матрица,
+        образованная ортонормированными
+        собственными векторами <b>u</b><i><sub>r</sub></i>
+        матрицы <b>XX</b><sup>t</sup>, соответствующим
+        значениям &#955;<sub><i>r</i></sub>;&nbsp;
+        </p><p align="center"><b>XX</b><sup>t</sup><b>u</b><i><sub>r</sub></i> = &#955;<sub><i>r</i></sub><b>u</b><i><sub>r</sub></i>;&nbsp;
+        </p><p align="left"><b>V</b>– матрица, образованная
+        ортонормированными собственными
+        векторами <b>v</b><i><sub>r</sub></i> матрицы <b>X</b><sup>t</sup><b>X</b>;&nbsp;</p><p align="center"><b>X</b><sup>t</sup><b>Xv</b><i><sub>r</sub></i>
+      = &#955;<sub><i>r</i></sub><b>v</b><i><sub>r</sub></i>;&nbsp;</p><p align="left"><b>S</b>
+      – положительно определенная
+      диагональная матрица, элементами
+      которой являются <a href="https://rcs.chemometrics.ru/old/Tutorials/matrix.htm#ch211">сингулярные значения</a> &#963;<sub>1</sub>&#8805;... &#8805;&#963;<sub>R</sub>&#8805;0
+      равные квадратным корням из собственных
+      значений &#955;<sub><i>r</i></sub>
+        </p><p align="center"><img border="0" src="./PCA_html_files/image03.gif" width="64" height="27">
+        </p><p>Связь между PCA и SVD определяется
+        следующими простыми соотношениями&nbsp;
+        </p><p align="center"><b>T</b> = <b>US&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>P</b> = <b>V</b>
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.4"></a></p><h2 align="left">2.4.
+      Счета</h2>
+      <p align="left">Матрица счетов <b>T</b> дает нам
+      проекции исходных образцов (<i>J</i> –мерных
+      векторов <b>x</b><sub>1</sub>,…,<b>x</b><i><sub>I</sub></i>)
+      на подпространство главных компонент (<i>A-</i>мерное).
+      Строки <b>t</b><sub>1</sub>,…,<b>t</b><i><sub>I</sub></i>
+      матрицы <b>T</b> – это координаты образцов в
+      новой системе координат. Столбцы <b>t</b><sub>1</sub>,…,<b>t</b><sub><i>A</i></sub>
+      матрицы <b>T</b> – ортогональны и
+      представляют проекции всех образцов на
+      одну новую координатную ось.&nbsp;</p><p align="left">При
+      исследовании данных методом PCA, особое
+      внимание уделяется графикам счетов. Они
+      несут в себе информацию, полезную для
+      понимания того, как устроены данные. На
+      графике счетов каждый образец
+      изображается в координатах (<b>t</b><sub><i>i</i></sub>,
+      <b>t</b><sub><i>j</i></sub>), чаще всего – (<b>t</b><sub>1</sub>,
+      <b>t</b><sub>2</sub>), обозначаемых PC1 и PC2.
+      Близость двух точек означает их
+      схожесть, т.е. положительную <a href="https://rcs.chemometrics.ru/old/Tutorials/statistics.htm#Ch1.9">корреляцию</a>.
+      Точки, расположенные под прямым углом,
+      являются некоррелироваными, а
+      расположенные диаметрально
+      противоположно – имеют отрицательную
+      корреляцию.
+        </p><p align="center"><samp><a name="Fig06"></a></samp><img border="0" src="./PCA_html_files/fig06a.gif" align="middle" width="303" height="379">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img border="0" src="./PCA_html_files/fig06b.gif" align="middle" width="298" height="361"></p><p align="center"><samp>Рис.6
+      График счетов</samp></p>
+      <p align="left">Подробнее о том, как из графиков
+      счетов извлекается полезная информация,
+      будет рассказано в примере.&nbsp;</p><p align="left">Для матрицы счетов имеют 
+место следующие соотношения –</p><p align="center"><b>T</b><sup>t</sup><b>T</b> = <strong>&#923;</strong>=
+      diag{ &#955;<sub>1</sub>,…,&#955;<sub><i>A</i></sub>},&nbsp;</p><p align="left">где
+      величины &#955;<sub>1</sub>&#8805;... &#8805;&#955;<sub><i>A</i></sub>&#8805;0&nbsp;
+      – это <a href="https://rcs.chemometrics.ru/old/Tutorials/matrix.htm#ch207">собственные значения</a>. Они
+      характеризуют важность каждой
+      компоненты<br>
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><b><a name="Eq4"></a><img border="0" src="./PCA_html_files/image04.gif" width="157" height="48"></b></p></td>
+              <td>
+                <p align="center">(4)</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+        <p align="left">Нулевое собственное значение &#955;<sub>0</sub>
+        определяется как сумма всех
+        собственных значений, т.е.</p><p align="left">&nbsp;
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><b><a name="Eq5"></a> <img border="0" src="./PCA_html_files/image05.gif" width="215" height="51"></b></p></td>
+              <td>
+                <p align="center">(5)</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+        <p align="left">Для вычисления <span lang="en-us">PCA-</span>счетов в 
+		надстройке <span lang="en-us"><em>Chemometrics Add-In</em></span> 
+		используется функция <span lang="en-us"><span class="prog"><strong>
+		<a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#Ch3.1">ScoresPCA</a></strong></span>.</span></p><p align="left">
+<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.5"></a></p><h2 align="left">2.5.
+      Нагрузки&nbsp;</h2>
+      <p align="left">Матрица нагрузок <b>P</b> – это
+      матрица перехода из исходного
+      пространства переменных <b>x</b><sub>1</sub>, …<b>x</b><i><sub>J</sub></i>
+      (<i>J-</i>мерного) в пространство главных
+      компонент (<i>A-</i>мерное). Каждая строка
+      матрицы <b>P</b> состоит из коэффициентов,
+      связывающих переменные <b>t</b> и <b>x</b> (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Eq1">1</a>).
+      Например, <i>a-</i>я строка – это проекция
+      всех переменных <b>x</b><sub>1</sub>, …<b>x</b><i><sub>J</sub></i>
+      на <i>a-</i>ю ось главных компонент. Каждый
+      столбец <b>P</b> – это проекция
+      соответствующей переменной <b>x</b><sub><i>j</i></sub>
+      на новую систему координат.</p><p align="center"><samp><a name="Fig07"></a></samp><img border="0" src="./PCA_html_files/fig07a.gif" align="middle" width="303" height="379">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <img border="0" src="./PCA_html_files/fig07b.gif" align="middle" width="628" height="241"></p><p align="center"><samp>Рис.7
+      График нагрузок</samp></p>
+      <p align="left">График нагрузок применяется
+      для исследования роли переменных. На
+      этом графике каждая переменная <b>x</b><sub><i>j</i></sub>
+      отображается точкой в координатах (<b>p</b><sub><i>i</i></sub>,
+      <b>p</b><sub><i>j</i></sub>), например (<b>p</b><sub>1</sub>, <b>p</b><sub>2</sub>).
+      Анализируя его аналогично графику
+      счетов, можно понять, какие переменные
+      связаны, а какие независимы. Совместное
+      исследование парных графиков счетов и
+      нагрузок, также может дать много
+      полезной информации о данных.&nbsp;</p><p align="left">В
+      методе главных компонент нагрузки – это
+      ортогональные нормированные вектора, т.е.&nbsp;</p><p align="center"><b>P</b><sup>t</sup><b>P</b>
+      = <b>I</b>
+        </p><p align="left">Для вычисления <span lang="en-us">PCA-</span>нагрузок в 
+		надстройке <span lang="en-us"><em>Chemometrics Add-In</em></span> 
+		используется функция <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#Ch3.2" class="prog">
+		<strong>Loadings</strong><span lang="en-us"><strong>PCA</strong></span></a><span lang="en-us">.</span></p><p align="left">
+<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.6"></a></p><h2 align="left">2.6.
+      Данные специального вида</h2>
+      <p align="left">Результат моделирования
+      методом главных компонент не зависит от
+      порядка, в котором следуют образцы и/или
+      переменные. Иными словами строки и
+      столбцы в исходной матрице <b>X</b> можно
+      переставить, но ничего принципиально не
+      изменится. Однако, в некоторых случаях,
+      сохранять и отслеживать этот порядок
+      очень полезно – это позволяет лучше
+      понять устройство моделируемых данных.</p><p align="center"><img border="0" src="./PCA_html_files/fig08.png" width="841" height="471"></p><p align="center"><samp><a name="Fig08"></a>Рис.
+      8 Данные ВЭЖХ–ДДМ</samp></p>
+      <p align="left">Рассмотрим простой пример –
+      моделирование данных, полученных
+      методом высокоэффективной жидкостной
+      хроматографией с детектированием на
+      диодной матрице (ВЭЖХ–ДДМ). Данные
+      представляются матрицей, размерностью 30
+      образцов (<i>I</i>) на 28 переменных (<i>J</i>).
+      Образцы соответствуют временам
+      удерживания от 0 до 30 с, а переменные –
+      длинам волн от 220 до 350 нм, на которых
+      происходит детектирование. Данные ВЭЖХ–ДДМ
+      представлены на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig08">Рис 8</a>.&nbsp;</p><p align="left">Эти
+      данные хорошо моделируются методом PCA с
+      двумя главными компонентами. Ясно, что в
+      этом примере нам важен порядок, в
+      котором идут образцы и переменные – он
+      задается естественным ходом времени и
+      спектральным диапазоном. Полученные
+      счета и нагрузки полезно изобразить на
+      графиках в зависимости от
+      соответствующего параметра – счета от
+      времени, а нагрузки от длины волны. (см. <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig10">Рис
+      9</a>)</p><p align="center"><img border="0" src="./PCA_html_files/fig09a.gif" width="342" height="342">&nbsp;&nbsp;&nbsp;
+      <img border="0" src="./PCA_html_files/fig09b.gif" width="341" height="341"></p><p align="center"><samp><a name="Fig09"></a>Рис.
+      9 Графики счетов и нагрузок для данных
+      ВЭЖХ–ДДМ</samp></p>
+      <p align="left">Подробнее этот пример разобран в пособии
+		<a href="https://rcs.chemometrics.ru/old/Tutorials/mcr.htm#Ch2.2">Разрешение многомерных кривых</a> .
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.7"></a></p><h2 align="left">2.7.
+      Погрешности&nbsp;</h2>
+      <p align="left">PCA декомпозиция матрицы <b>X</b>
+      является последовательным, итеративным
+      процессом, который можно оборвать на
+      любом шаге <i>a</i>=<i>A</i>. Получившаяся
+      матрица</p><p align="center"><img border="0" src="./PCA_html_files/image06.gif" width="60" height="21"></p><p align="left">вообще
+      говоря, отличается от матрицы X. Разница
+      между ними&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image07.gif" width="72" height="21"></p><p align="left">называется
+      <em>матрицей остатков</em>.</p><p align="left">Рассмотрим
+      геометрическую интерпретацию остатков.
+      Каждый исходный образец <b>x</b><sub><i>i</i></sub> (строка
+      в матрице <b>X</b>) можно представить как
+      вектор в <i>J</i>– мерном пространстве с
+      координатами</p><p align="center"><img border="0" src="./PCA_html_files/image08.gif" width="137" height="24"></p><p align="center"><samp><a name="Fig10"></a></samp><img border="0" src="./PCA_html_files/fig10.gif" width="454" height="485"></p><p align="center"><samp>Рис.
+      10 Геометрия PCA</samp></p>
+      <p align="left">PCA проецирует его в вектор,
+      лежащий в пространстве главных
+      компонент, <b>t</b><sub><i>i</i></sub>=(<b>t</b><sub><i>i</i>1</sub>,
+      <b>t</b><sub><i>i</i>2</sub>, …<b>t</b><i><sub>iA</sub></i>)
+      размерностью <i>A</i>. В исходном
+      пространстве этот же вектор <b>t</b><sub>i</sub>
+      имеет координаты</p><p align="center"><img border="0" src="./PCA_html_files/image09.gif" width="137" height="24"></p><p align="left">Разница
+      между исходным вектором и его проекцией
+      является вектором остатков&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image10.gif" width="192" height="24"></p><p align="left">Он
+      образует <i>i</i>–ю строку в матрице
+      остатков <b>E</b>. <a name="Fig11"></a></p><p align="center"><img border="0" src="./PCA_html_files/fig11.gif" width="974" height="361"></p><p align="center"><samp>Рис.11
+      Вычисление остатков&nbsp;</samp></p>
+      <p align="left">Исследуя остатки можно понять,
+      как устроены данные и хорошо ли они
+      описываются PCA моделью.&nbsp;</p><p align="left">Для вычисления
+<span lang="en-us">PCA-</span>остатков можно использовать приемы, описанные в 
+пособии <a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm">Расширение возможностей Chemometrics Add-In</a>. </p><p align="left">Величина&nbsp; 
+–&nbsp;</p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><a name="Eq6"></a><img border="0" src="./PCA_html_files/image11.gif" width="72" height="51"></p></td>
+              <td>
+                <p align="center">(<span lang="en-us">6</span>)</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+        <p align="left">определяет
+      квадрат отклонения исходного<span lang="en-us"> </span>вектора <b>x</b><sub><i>i</i></sub> от его проекции
+      на пространство PC. Чем оно меньше, тем
+      лучше приближается <i>i</i>–ый образец.&nbsp;</p><p align="left">Для 
+вычисления отклонений можно использовать <a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch1.7">стандартные 
+функции листа</a> или <a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch2.6">специальную пользовательскую 
+функцию</a>.</p><p align="left">Эта
+      же величина, деленная на число
+      переменных&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image12.gif" width="87" height="51"></p><p align="left">дает
+      <a href="https://rcs.chemometrics.ru/old/Tutorials/statistics.htm#Ch3.5">оценку дисперсии</a> (вариации) <i>i</i>–го
+      образца.&nbsp;</p><p align="left">Среднее (для всех
+      образцов) расстояние <i>v</i><sub>0</sub>
+      вычисляется как&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image13.gif" width="84" height="48"></p><p align="left">
+Оценка общая (для всех образцов) дисперсии вычисляется так –</p><p align="center"><img border="0" src="./PCA_html_files/image14.gif" width="84" height="48">
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.8"></a></p><h2 align="left">2.8.
+      Проверка&nbsp;</h2>
+      <p align="left">В случае, когда PCA модель
+      предназначена для предсказания или для
+      классификации, а не для простого
+      исследования данных, такая модель
+      нуждается в подтверждении (валидации).
+      При проверке методом тест–валидации
+      исходный массив данных состоит из двух
+      независимо полученных наборов, каждый
+      из которых является достаточно
+      представительным. Первый набор,
+      называемый обучающим, используется для
+      моделирования. Второй набор, называемый
+      проверочным, служит только для проверки
+      модели. Построенная модель применяется
+      к данным из проверочного набора, и
+      полученные результаты сравниваются с
+      проверочными значениями. Таким образом
+      принимается решение о правильности,
+      точности моделирования.</p><p align="center"><samp><a name="Fig12"></a></samp><img border="0" src="./PCA_html_files/fig12.gif" width="320" height="323"></p><p align="center"><samp>Рис.12
+      Обучающий и проверочный наборы</samp></p><p align="left">В
+      некоторых случаях объем данных слишком
+      мал для такой проверки. Тогда применяют
+      другой метод – перекрестной проверки (кросс–валидация),
+      о котором можно прочитать <a href="https://rcs.chemometrics.ru/old/Tutorials/calibration.htm#Ch1.3">здесь</a>.</p><p align="left">Используется
+      также проверка методом коррекции
+      размахом, суть которой предлагается
+      изучить самостоятельно.
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.9"></a></p><h2 align="left">2.9.
+      "Качество" декомпозиции&nbsp;</h2>
+      <p align="left">Результатом PCA моделирования
+      являются величины 
+		<img border="0" src="./PCA_html_files/image15.gif" align="middle" width="23" height="27" class="style3">–
+      оценки, найденные по модели, построенной
+      на обучающем наборе <b>X</b><sub>c</sub>.
+      Результатом проверки служат величины 
+		<img border="0" src="./PCA_html_files/image16.gif" align="middle" width="21" height="27" class="style3">–
+      оценки проверочных значений <b>X</b><sub>t</sub>,
+      вычисленные по той же модели, но как
+      новые образцы (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Eq3">3</a>). Отклонение
+      оценки от проверочного значения
+      вычисляют как матрицу остатков: в
+      обучении&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image17.gif" width="93" height="27">,</p><p align="left">и
+      в проверке</p><p align="center"><img border="0" src="./PCA_html_files/image18.gif" width="91" height="27">.</p><p align="left">Следующие
+      величины характеризуют "качество"
+      моделирования в среднем.&nbsp;</p><p align="left">Полная
+<a href="https://rcs.chemometrics.ru/old/Tutorials/statistics.htm#Ch3.6">дисперсия</a> остатков в обучении (TRVC) и в 
+проверке (TRVP) –<br>
+      &nbsp;
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><b> <img border="0" src="./PCA_html_files/image19.gif" width="176" height="52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <img border="0" src="./PCA_html_files/image20.gif" width="172" height="52"></b></p></td>
+              <td>
+                <p align="center">&nbsp;</p></td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+      <p align="left">Полная дисперсия выражается в
+      тех же единицах (точнее их квадратах),
+      что и исходные величины X.&nbsp;</p><p align="left">Объясненная
+      дисперсия остатков в обучении (ERVC) и в
+      проверке (ERVP)&nbsp;<br>
+      &nbsp;
+        </p><div align="center">
+          <center>
+          <table border="0" cellpadding="0" cellspacing="0" width="95%">
+            <tbody><tr>
+              <td width="90%">
+                <p align="center"><b><a name="Eq7"></a> <img border="0" src="./PCA_html_files/image21.gif" width="207" height="52">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <img border="0" src="./PCA_html_files/image22.gif" width="207" height="52"></b></p></td>
+              <td>
+                &nbsp;</td>
+            </tr>
+          </tbody></table>
+          </center>
+        </div>
+      <p align="left">Объясненная дисперсия – это
+      относительная величина. При ее
+      вычислении используется естественная
+      нормировка – сумма квадратов всех
+      исходных величин <i>x</i><sub><i>ij</i></sub>. Обычно
+      она выражается в процентах или в долях
+      единицы. Во всех этих формулах величины <i>e<sub>ij</sub></i>
+      – это элементы матриц <b>E</b><sub>c</sub> или <b>E</b><sub>t</sub>.
+      Для характеристик, наименование которых
+      оканчивается на C (например, TRVC),
+      используется матрица <b>E</b><sub>c</sub> (обучение),
+      а для тех, которые оканчиваются на P (например,
+      TRVP), берется матрица <b>E</b><sub>t</sub> (проверка).
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.10"></a></p><h2 align="left">2.10.
+      Выбор числа главных компонент&nbsp;</h2>
+      <p align="left">Как уже отмечалось выше, метод
+      главных компонент – это итерационная
+      процедура, в которой новые компоненты
+      добавляются последовательно, одна за
+      другой. Важно знать, когда остановить
+      этот процесс, т.е. как определить
+      правильное число главных компонент, A.
+      Если это число слишком мало, то описание
+      данных будет не полным. С другой стороны,
+      избыточное число главных компонент
+      приводит к переоценке, т.е. к ситуации,
+      когда моделируется шум, а не
+      содержательная информация.</p><p align="left">Для
+      выбора значения числа главных компонент
+      обычно используется график, на котором
+      объясненная дисперсия (ERV) изображается
+      в зависимости от числа PC. Пример такого
+      графика приведен на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig13">Рис. 13</a>.</p><p align="center"><samp><a name="Fig13"></a></samp><img border="0" src="./PCA_html_files/fig13.gif" width="341" height="341"></p><p align="center"><samp>Рис.
+      13 Выбор числа PC</samp></p>
+      <p align="left">Из этого графика видно, что
+      правильное число PC – это 3 или 4. Три
+      компоненты объясняют 95%, а четыре 98%
+      исходной вариации. Окончательное
+      решение о величине <i>A</i> можно принять
+      только после содержательного анализа
+      данных.&nbsp;</p><p align="left">Другим полезным
+      инструментом является график, на
+      котором изображаются собственные
+      значения (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Eq4">4</a>) в зависимости от
+      числа PC. Пример показан на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig14">Рис.14</a>.</p><p align="center"><samp><a name="Fig14"></a></samp><img border="0" src="./PCA_html_files/fig14.gif" width="343" height="343"></p><p align="center"><samp>Рис.
+      14 График собственных значений</samp></p>
+      <p align="left">Из этого рисунка опять видно,
+      что для <i>a</i>=3 происходит резкое
+      изменение формы графика – излом. Поэтому
+      верное число PC – это три или четыре.&nbsp;
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.11"></a></p><h2 align="left">2.11.
+      Неединственность PCA&nbsp;</h2>
+      <p align="left">Разложение по методу главных
+      компонент</p><p align="center">&nbsp;<img border="0" src="./PCA_html_files/image23.gif" width="88" height="28"></p><p align="left">не
+      является единственным. Вместо матриц <b>T</b>
+      и <b>P</b> можно использовать другие
+      матрицы&nbsp; 
+<img border="0" src="./PCA_html_files/image24.gif" align="bottom" width="16" height="21" class="style3">и&nbsp;
+      <img border="0" src="./PCA_html_files/image25.gif" align="bottom" width="15" height="21" class="style3">,
+      которые дадут аналогичную декомпозицию</p><p align="center"><img border="0" src="./PCA_html_files/image26.gif" width="84" height="28"></p><p align="left">с
+      той же матрицей ошибок <b>E</b>. Простейший
+      пример – это одновременное изменение
+      знаков у соответствующих компонент
+      векторов <b>t</b><i><sub>a</sub></i> и <b>p</b><i><sub>a</sub></i>,
+      при котором произведение&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image27.gif" width="81" height="27"></p><p align="left">остается
+      неизменным.&nbsp;Алгоритм <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.2"> NIPALS</a> дает именно
+      такой результат – с точностью до знака,
+      поэтому его реализация в разных
+      программах может приводить к
+      расхождениям в направлениях главных
+      компонент.</p><p align="left">Более сложный случай
+      – это одновременное вращение матриц <b>T</b>
+      и <b>P</b>. Пусть <b>R</b> – это ортогональная
+      матрица вращения размерностью <i>A</i><span style="mso-ansi-language:RU">&#215;</span><i>A</i> , т.е такая
+      матрица, что <b>R</b><sup>t</sup>=<b>R</b><sup>–1</sup>.
+      Тогда</p><p align="center"><img border="0" src="./PCA_html_files/image28.gif" width="237" height="28"></p><p align="left">Заметим,
+      что новые матрицы счетов и нагрузок
+      сохраняют все свойства старых,</p><p align="center"><img border="0" src="./PCA_html_files/image29.gif" width="101" height="56">.</p><p align="left">Это
+      свойство PCA называется вращательной
+      неопределенностью. Оно интенсивно
+      используется при решении задач
+      разделения кривых, в частности
+      методом <a href="https://rcs.chemometrics.ru/old/Tutorials/mcr.htm#Ch3.1">прокрустова
+      вращения</a>. Если отказаться от условий
+      ортогональности главных компонент, то
+      декомпозиция матрицы станет еще более
+      общей. Пусть теперь <b>R</b> – это
+      произвольная невырожденная матрица
+      размерностью <i>A</i><span style="mso-ansi-language:RU">&#215;</span><i>A</i> . Тогда</p><p align="center"><img border="0" src="./PCA_html_files/image30.gif" width="163" height="25"></p><p align="left">Эти
+      матрицы счетов и нагрузок уже не
+      удовлетворяют условию ортогональности
+      и нормирования. Зато они могут состоять
+      только из неотрицательных элементов, а
+      также подчиняться другим требованиям,
+      накладываемым при решении задач
+      разделения сигналов.</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.12"></a></p><h2 align="left">2.12.
+      Подготовка данных&nbsp;</h2>
+      <p align="left">Во многих случаях, перед
+      применением PCA, исходные данные нужно
+      предварительно подготовить:
+      отцентрировать и/или отнормировать. Эти
+      преобразования проводятся по столбцам –
+      переменным.&nbsp;</p><p align="left"><i>Центрирование</i>
+      – это вычитание из каждого столбца <b>x</b><i><sub>j</sub></i>
+      среднего (по столбцу) значения&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image31.gif" width="141" height="28">.</p><p align="left">Центрирование
+      необходимо потому, что оригинальная PCA
+      модель (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Eq2">2</a>) не содержит
+      свободного члена.&nbsp;</p><p align="left">Второе
+      простейшее преобразование данных – это <i>нормирование</i>.
+      Это преобразование выравнивает вклад
+      разных переменных в PCA модель. При этом
+      преобразовании каждый столбец <b>x</b><sub><i>j</i></sub>
+      делится на свое стандартное отклонение.</p><p align="center"><img border="0" src="./PCA_html_files/image32.gif" width="149" height="53"></p><p align="left">Комбинация
+      центрирования и нормирования по
+      столбцам называется <i>автошкалированием</i>.&nbsp;</p><p align="center"><img border="0" src="./PCA_html_files/image33.gif" width="116" height="25"></p><p align="left">Любое
+      преобразование данных – центрирование,
+      нормирование, и т.п. – всегда делается
+      сначала на обучающем наборе. По этому
+      набору вычисляются значения <i>m<sub>j</sub> </i>и
+      <i>s<sub>j</sub></i>, которые затем применяются и
+      к обучающему, и к проверочному набору.&nbsp;</p><p align="left">В надстройке
+<span lang="en-us"><em>Chemometrics Add In</em> </span>подготовка данных 
+проводится <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#nCent">автоматически</a>. Если подготовку 
+нужно провести вручную, то для нее можно использовать <a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch1.3">
+стандартные функции листа</a> или <a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch2.3">специальную 
+пользовательскую функцию</a>.</p><p align="left">В
+      задачах, где структура исходных данных <b>X</b>
+      априори предполагает однородность и
+      гомоскедастичность, подготовка данных
+      не только не нужна, но и вредна. Именно
+      такой случай представляют ВЭЖХ–ДДМ данные,
+      рассмотренные в пособии <a href="https://rcs.chemometrics.ru/old/Tutorials/mcr.htm#Ch2.3">Разрешение многомерных кривых.</a> </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch2.13"></a></p><h2 align="left">2.1<span lang="en-us">3</span>.
+      Размах и отклонение&nbsp;</h2>
+<p align="left">При заданном числе главных компонент <em>A</em>, величина 
+</p><p class="style1"><img src="./PCA_html_files/image35.gif" width="171" height="51">&nbsp;</p><p align="left">
+называется <em>размахом</em> (leverage). Эта величина равна квадрату расстояния 
+Махаланобиса от центра модели до <em>i</em>–го образца в пространстве счетов, 
+поэтому размах характеризует как далеко находится каждый образец в 
+гиперплоскости главных компонент. 
+</p><p align="left">Для размаха имеет место соотношение 
+</p><p class="style1"><img src="./PCA_html_files/image36.gif" width="112" height="48">&nbsp;</p><p align="left">
+которое выполняется тождественно – по построению PCA. 
+</p><p align="left">Для вычисления размахов можно использовать
+<a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch1.8">стандартные функции листа</a> или
+<a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch2.7">специальную пользовательскую функцию</a>.</p><p align="left">Другой важной характеристикой PCA модели является <em>отклонение</em>
+<em>v</em><sub><span lang="en-us"><em>i</em></span></sub>, которое вычисляется 
+как сумма квадратов остатков<span lang="en-us"> (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Eq6">6</a>)</span> – квадрат эвклидова расстояния от плоскости главных компонент до 
+объекта <em>i</em>.  
+</p><p align="left">Для вычисления отклонений можно использовать
+<a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch1.7">стандартные функции листа</a> или
+<a href="https://rcs.chemometrics.ru/old/Tutorials/tricks.htm#Ch2.6">специальную пользовательскую функцию</a>.</p><p align="left">Две эти величины: <span lang="en-us"><em>h<sub>i</sub></em>
+</span>и <span lang="en-us"><em>v<sub>i</sub></em> </span>определяют положение 
+объекта (образца) относительно имеющейся <span lang="en-us">PCA </span>модели. 
+Слишком большие значения размаха и/или отклонения свидетельствуют об особенности 
+такого объекта, который может быть экстремальным или выпадающим образцом. 
+</p><p align="left">Анализ величин&nbsp; <span lang="en-us"><em>h<sub>i</sub></em>
+</span>и <span lang="en-us"><em>v<sub>i</sub></em> </span>составляет основу
+<span lang="en-us"><a href="https://rcs.chemometrics.ru/old/Tutorials/classification.htm#Ch3.4">SIMCA</a> – </span>метода классификации с обучением. 
+</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3"></a></p><p align="left">&nbsp;</p><h1 align="left">3.
+      Люди и страны <a name="Ch3.1"></a></h1>
+        <h2 align="left">3.1. Пример&nbsp;</h2>
+        <p align="left">Метод главных компонент
+        иллюстрируется примером, помещенным в
+        файл <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls">People.xls</a>.&nbsp;</p><p align="left">Этот
+      файл включает в себя следующие листы:&nbsp;
+      </p><blockquote>
+        <p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Intro!C4"><em>Intro</em></a>:
+        краткое введение&nbsp;
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Layout!A1"><em>Layout</em></a>:
+        схемы, объясняющая имена массивов,
+        используемых в примере
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!A1"><em>Data</em></a>: данные,
+        используемые в примере.&nbsp;</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#MVA!A1">
+		<em>MVA</em></a>:
+        PCA декомпозиция, выполненная с помощью
+        надстройки <i><a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm">Chemometrics.xla&nbsp;</a></i>
+        </p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#PCA!A1"><em>PCA</em></a>: копия
+        всех результатов PCA не привязанная к
+        надстройке <i>Chemometrics.xla&nbsp;</i></p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#&#39;Scores1-2&#39;!A1">
+		<em>Scores1–2</em></a>:
+        анализ младших счетов PC1–PC2</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#&#39;Scores3-4&#39;!A1">
+		<em>Scores3–4</em></a>:
+        анализ старших счетов PC3–PC4</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Loadings!A1">
+		<em>Loadings</em></a>:
+        анализ нагрузок</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Residuals!A1">
+		<em>Residuals</em></a>:
+        анализ остатков
+      </p></blockquote>
+        <p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.2"></a></p>
+      <h2 align="left">3.2. Данные&nbsp;</h2>
+      <p align="left">Анализ базируется на данных
+      европейского демографического
+      исследования, опубликованных в книге <a href="https://rcs.chemometrics.ru/old/Tutorials/references.htm#L3.1">К.
+      Эсбенсена</a>.&nbsp;</p><p align="left">По
+      причинам дидактического характера
+      используется лишь небольшой набор из 32
+      человек, из которых 16 представляют
+      Северную Европу (Скандинавия) и столько
+      же – Южную (Средиземноморье). Для баланса
+      выбрано одинаковое количество мужчин и
+      женщин – по 16 человек. Люди
+      характеризуются двенадцатью
+      переменными, перечисленными в <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Tab1">Табл.
+      1</a>.</p><p align="center"><samp><a name="Tab1"></a>Табл. 1
+      Переменные, использованные в
+      демографическом анализе<br>
+      &nbsp;</samp>
+      </p><div align="center">
+        <center>
+        <table border="1" cellspacing="0" cellpadding="4">
+          <tbody><tr>
+            <td nowrap="" bgcolor="#C0C0C0"><i>Height&nbsp;</i></td>
+            <td nowrap="" bgcolor="#C0C0C0">Рост: в сантиметрах</td>
+          </tr>
+          <tr>
+            <td nowrap=""><i>Weight&nbsp;</i></td>
+            <td nowrap="">Вес: в килограммах</td>
+          </tr>
+          <tr>
+            <td nowrap="" bgcolor="#C0C0C0"><i>Hair&nbsp;</i></td>
+            <td nowrap="" bgcolor="#C0C0C0">Волосы: короткие: –1,
+              или длинные: +1</td>
+          </tr>
+          <tr>
+            <td nowrap=""><i>Shoes&nbsp;</i></td>
+            <td nowrap="">Обувь: размер по европейскому
+              стандарту</td>
+          </tr>
+          <tr>
+            <td nowrap="" bgcolor="#C0C0C0"><i>Age&nbsp;</i></td>
+            <td nowrap="" bgcolor="#C0C0C0">Возраст: в годах</td>
+          </tr>
+          <tr>
+            <td nowrap=""><i>Income&nbsp;</i></td>
+            <td nowrap="">Доход: в тысячах евро в год</td>
+          </tr>
+          <tr>
+            <td nowrap="" bgcolor="#C0C0C0"><i>Beer&nbsp;</i></td>
+            <td nowrap="" bgcolor="#C0C0C0">Пиво: потребление в
+              литрах в год</td>
+          </tr>
+          <tr>
+            <td nowrap=""><i>Wine&nbsp;</i></td>
+            <td nowrap="">Вино: потребление в литрах в
+              год</td>
+          </tr>
+          <tr>
+            <td nowrap="" bgcolor="#C0C0C0"><i>Sex&nbsp;</i></td>
+            <td nowrap="" bgcolor="#C0C0C0">Пол: мужской: –1, или
+              женский: +1</td>
+          </tr>
+          <tr>
+            <td nowrap=""><i>Strength&nbsp;</i></td>
+            <td nowrap="">Сила: индекс, основанный на
+              проверке физических способностей</td>
+          </tr>
+          <tr>
+            <td nowrap="" bgcolor="#C0C0C0"><i>Region&nbsp;</i></td>
+            <td nowrap="" bgcolor="#C0C0C0">Регион: север : –1, или
+              юг: +1</td>
+          </tr>
+          <tr>
+            <td nowrap=""><i>IQ</i></td>
+            <td nowrap="">Коэффициент интеллекта,
+              измеряемый по стандартному тесту</td>
+          </tr>
+        </tbody></table>
+        </center>
+      </div>
+        <p align="left">Заметим, что такие переменные,
+        как <i>Sex</i>, <i>Hair</i> и <i>Region</i> имеют
+        дискретный характер с двумя возможными
+        значениями: –1 или +1, тогда как остальные
+        девять переменных могут принимать
+        непрерывные числовые значения.
+        </p><p align="center"><samp><a name="Fig15"></a></samp><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!A1"><img border="0" src="./PCA_html_files/fig15.gif" width="744" height="586"></a></p><p align="center"><samp>Рис.
+      15 </samp><samp>Исходные данные в примере People</samp></p>
+        <p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.3"></a>
+        </p><h2 align="left">3.3. Исследование данных&nbsp;</h2>
+      <p align="left">Прежде всего, любопытно
+      посмотреть на графиках, как связаны
+      между собой все эти переменные. Зависит
+      ли рост (<i>Height</i> ) от веса (<i>Weight</i>)?
+      Отличаются ли женщины от мужчин в
+      потреблении вина (<i>Wine</i>)? Связан ли
+      доход (<i>Income</i>) с возрастом (<i>Age</i>)?
+      Зависит ли вес (<i>Weight</i>) от потребления
+      пива (<i>Beer</i>)?&nbsp;</p><p align="center"><samp><a name="Fig16"></a></samp><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!P2"><img border="0" src="./PCA_html_files/fig16a.gif" width="341" height="342"></a>&nbsp;
+      <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!V2"><img border="0" src="./PCA_html_files/fig16b.gif" width="342" height="343"></a><br>
+      <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!P26">
+      <img border="0" src="./PCA_html_files/fig16c.gif" width="344" height="356"></a>&nbsp; <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!V26"><img border="0" src="./PCA_html_files/fig16d.gif" width="340" height="355"></a></p><p align="center"><samp>Рис.
+      16 Связи между переменными в примере People.&nbsp;<br>
+      Женщины (F) обозначены кружками </samp><span style="FONT-SIZE: 14pt; COLOR: red; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU; mso-bidi-font-style: italic">&#9679;</span><samp>
+      и </samp><span style="FONT-SIZE: 11pt; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU; mso-bidi-font-style: italic"></span><span style="FONT-SIZE: 14pt; COLOR: aqua; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU; mso-bidi-font-style: italic">&#9679;</span><samp>,
+      а мужчины (M) – квадратами </samp><span style="font-size: 14pt; color: red; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU">&#9632;</span><samp>
+      и </samp><span style="FONT-SIZE: 11pt; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU"><span style="FONT-SIZE: 14pt; COLOR: aqua; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU">&#9632;</span></span><samp>.&nbsp;<br>
+      Север (N) представлен голубым </samp><span style="FONT-SIZE: 11pt; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU"><span style="FONT-SIZE: 14pt; COLOR: aqua; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU">&#9632;</span></span><samp>,
+      а юг (S) – красным цветом </samp><span style="FONT-SIZE: 14pt; COLOR: red; mso-bidi-font-size: 12.0pt; mso-ansi-language: RU; mso-bidi-font-style: italic">&#9679;</span><samp>.</samp></p>
+      <p align="left">Некоторые из этих зависимостей
+      показаны на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig16">Рис.16</a>. Для
+      наглядности на всех графиках
+      использованы одни и те же обозначения:
+      женщины (F) показаны кружками, мужчины (M) –
+      квадратами, север (N) представлен голубым,
+      а юг (S) – красным цветом.</p><p align="left">Связь
+      между весом (<i>Weight</i>) и ростом (<i>Height</i>)
+      показана на Рис.16a. Очевидна, прямая (положительная)
+      пропорциональность. Учитывая
+      маркировку точек, можно заметить также,
+      что мужчины (M) в большинстве своем
+      тяжелее и выше женщин (F).&nbsp;&nbsp;
+        </p><p align="left">На Рис. 16b показана другая пара
+        переменных: вес (<i>Weight</i>) и пиво (<i>Beer</i>).
+        Здесь, помимо очевидных фактов, что
+        большие люди пьют больше, а женщины –
+        меньше, чем мужчины, можно заметить еще
+        две отдельные группы – южан и северян.
+        Первые пьют меньше пива при том же весе.
+        </p><p align="left">Эти же группы заметны и на Рис.16c,
+        где показана зависимость между
+        потреблением вина (<i>Wine</i>)&nbsp; и пива (<i>Beer</i>).
+        Из него видно, что связь между этими
+        переменными отрицательна – чем больше
+        потребляется пива, тем меньше вина. На
+        юге пьют больше вина, а на севере – пива.
+        Интересно, что в обеих группах женщины
+        располагаются слева, но не ниже по
+        отношению к мужчинам. Это означает, что,
+        потребляя меньше пива, прекрасный пол
+        не уступает в вине.
+        </p><p align="left">Последний график на Рис. 16d
+        показывает, как связаны возраст (<i>Age</i>)
+        и доход (<i>Income</i>). Легко видеть, что даже
+        в этом сравнительно небольшом наборе
+        данных есть переменные, как с
+        положительной, так и с отрицательной
+        корреляцией.&nbsp;</p><p align="left">Можно ли
+      построить графики для всех пар
+      переменных выборки? Вряд ли.&nbsp;Проблема&nbsp;состоит в том, что для 12 переменных
+      существует 12(12–1)/2=66 таких комбинаций.&nbsp;</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.4"></a></p><h2 align="left">3.4.
+      Подготовка данных&nbsp;</h2>
+      <p align="left">Перед тем, как подвергнуть
+      данные анализу методом главных
+      компонент, их надо подготовить. Простой
+      статистический расчет показывает, что
+      они нуждаются в <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch2.12">автошкалировании</a> (См.
+      Рис. 17)</p><p align="center"><a name="Fig17"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!O53"><img border="0" src="./PCA_html_files/fig17.gif" width="652" height="341"></a></p><p align="center"><samp>Рис.
+      17 Средние значения и СКО для переменных
+      в примере </samp><samp>People.&nbsp;</samp></p><p align="left">Средние
+      значения по многим переменным
+      отличаются от нуля. Кроме того,
+      среднеквадратичные отклонения сильно
+      разнятся. После автошкалирования
+      среднее значение всех переменных
+      становится равно нулю, а отклонение –
+      единица.</p><p align="center"><a name="Fig18"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Data!A39"><img border="0" src="./PCA_html_files/fig18.gif" width="745" height="585"></a></p><p align="center"><samp>Рис.
+      18 Автошкалированные данные в примере
+      People.&nbsp;</samp></p><p align="left">В принципе, данные
+      можно было бы не преобразовывать явно,
+      на листе, а оставить как есть. Ведь
+      стандартные хемометрические процедуры,
+      собранные в программе <i>Chemometrics</i> могут <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#nCent">
+      центрировать и шкалировать </a> данные при
+      выполнении вычислений. Однако матрица
+      автошкалированных данных понадобится
+      нам при вычислении остатков в <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Ch3.8"> разделе
+      3.8 </a>
+      .</p><p align="left">&nbsp;<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.5"></a></p><h2 align="left">3.5.
+      Вычисление счетов и нагрузок&nbsp;</h2>
+      <p align="left">Для построения PCA декомпозиции
+      можно воспользоваться стандартными
+      функциями <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#Ch3.1" class="prog"><strong>ScoresPCA</strong></a>
+      и <a href="https://rcs.chemometrics.ru/old/Tutorials/projection.htm#Ch3.2" class="prog"><strong>LoadingsPCA</strong></a>, 
+		имеющимися в надстройке <i>Chemometrics</i>. Мы
+      вычислим все 12 возможных главных
+      компонент. В качестве первого аргумента
+      используется исходный, не
+      преобразованный массив данных, поэтому
+      последний аргумент в обеих функциях
+      равен 3 – автошкалирование.</p><p align="center"><a name="Fig19"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#MVA!B4"><img border="0" src="./PCA_html_files/fig19.gif" width="596" height="573"></a></p><p align="center"><samp>Рис.
+      19 Вычисление матрицы счетов&nbsp;</samp></p><p align="center"><a name="Fig20"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#MVA!P4"><img border="0" src="./PCA_html_files/fig20.gif" width="676" height="247"></a></p><p align="center"><samp>Рис.
+      20 Вычисление матрицы нагрузок</samp></p><p align="left">В
+      этом пособии все PCA вычисления
+      проводятся в книге <em>People.xls</em> на листе <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#MVA!A1">
+<em>MVA</em></a>.
+      Для удобства читателя эти же результаты
+      продублированы на листе <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#PCA!A1"><em>PCA</em></a>
+      как числа, без ссылки на надстройку <i>Chemometrics.xla</i>.
+      Остальные листы рабочей книги связаны
+      не с данными на листе <em>MVA</em>, с данными на
+      листе PCA. Поэтому файл <em>People.xls</em> можно
+      использовать даже тогда, когда
+      надстройка <i>Chemometrics.xla</i> не установлена на&nbsp; компьютере.</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.6"></a></p><h2 align="left">3.6.
+      Графики счетов&nbsp;</h2>
+      <p align="left">Посмотрим на графики счетов,
+      которые показывают, как расположены
+      образцы в проекционном пространстве.&nbsp;</p><p align="left">На
+      графике младших счетов PC1–PC2 (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig21">Рис.
+      21</a>) мы видим четыре отдельные группы,
+      разложенные по четырем квадрантам:
+      слева – женщины (F), справа – мужчины (M),
+      сверху – юг (S), а снизу – север (N). Из этого
+      сразу становится ясен смысл первых двух
+      направлений PC1 и PC2. Первая компонента
+      разделяет людей по полу, а вторая – по
+      месту жительства. Именно эти факторы
+      наиболее сильно влияют на разброс
+      свойств.</p><p align="center"><a name="Fig21"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#&#39;Scores1-2&#39;!D2"><img border="0" src="./PCA_html_files/fig21.gif" width="341" height="341"></a></p><p align="center"><samp>Рис.
+      21 График счетов (PC1 – PC2) с обозначениями,
+      использованными ранее на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig16">Рис 16</a></samp></p><p align="left">Продолжим
+      изучение, построив график старших
+      счетов PC3– PC4 (<a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig22">Рис. 22</a> ).&nbsp;</p><p align="center"><a name="Fig22"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#&#39;Scores3-4&#39;!I3"><img border="0" src="./PCA_html_files/fig22.gif" width="341" height="341"></a></p><p align="center"><samp>Рис.
+      22 График счетов (PC3 – PC4) с новыми
+      обозначениями:&nbsp;<br>
+      размер и цвет символов отражает доход –
+      чем больше и светлее, тем он больше.
+      Числа представляют возраст</samp></p><p align="left">Здесь
+      уже не видно таких отчетливых групп. Тем
+      не менее, внимательно исследовав этот
+      график совместно с таблицей исходных
+      данных, можно, после некоторых усилий,
+      сделать вывод о том, что PC3 отделяет
+      старых/богатых людей от молодых/бедных.
+      Чтобы сделать это более очевидным, мы
+      изменили обозначения. Теперь каждый
+      человек показан кружком, цвет и размер
+      которого меняется в зависимости от
+      дохода – чем больше и светлее, тем больше
+      доход. Рядом показан возраст каждого
+      объекта. Как видно, возраст и доход
+      уменьшается слева направо, т.е. вдоль PC3.
+      А вот смысл PC4 нам по–прежнему не ясен.</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.7"></a></p><h2 align="left">3.7.
+      Графики нагрузок&nbsp;</h2>
+      <p align="left">Чтобы разобраться с этим,
+      построим соответствующие графики
+      нагрузок. Они подскажут нам, какие <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Tab1">
+      переменные</a> и как связаны между собой,
+      что влияет на что.&nbsp;</p><p align="left">Из графика
+      младших компонент мы сразу видим, что
+      переменные <i>рост</i> (<i>Height</i>), <i>вес</i> (<i>Weight</i>),
+      <i>сила</i> (<i>Strength</i>) и <i>обувь</i> (<i>Shoes</i>)
+      образуют компактную группу в правой
+      части графика. Они практически
+      сливаются, что означает их тесную
+      положительную корреляцию. Переменные
+      волосы (<i>Hair</i>) и пол (<i>Sex</i>) находятся в
+      другой группе, лежащей по диагонали от
+      первой группы. Это свидетельствует о
+      высокой отрицательной корреляции между
+      переменными из этих групп, например, <i>силой</i>
+      (<i>Strength</i>) и <i>полом</i> (<i>Sex</i>). Наибольшие
+      нагрузки на вторую компоненту имеют
+      переменные <i>вино</i> (<i>Wine</i>) и <i>регион</i>
+      (<i>Region</i>), также тесно связанные друг с
+      другом. Переменная <i>доход</i> (<i>Income</i>)
+      лежит на первом графике напротив
+      переменной <i>регион</i> (<i>Region</i>), что
+      отражает дифференциацию
+      состоятельности: Север–Юг. Можно
+      заметить также и антитезу переменных <i>пиво</i>
+      (<i>Beer</i>) –<i>регион</i>/<i>вино</i>(<i>Region/</i><i>Wine</i>).</p><p align="center"><a name="Fig23"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Loadings!A15"><img border="0" src="./PCA_html_files/fig23a.gif" width="341" height="341"></a>&nbsp;&nbsp;
+      <a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Loadings!G15"><img border="0" src="./PCA_html_files/fig23b.gif" width="343" height="343"></a></p><p align="center"><samp>Рис.
+      23 Графики нагрузок: PC1 – PC2 и PC3 – PC4&nbsp;</samp></p><p align="left">Из
+      второго графика мы видим большие
+      нагрузки переменных возраст (<i>Age</i>) и
+      доход (<i>Income</i>) на ось PC3, что
+      соответствует графику счетов на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig21">Рис.
+      21</a>. Рассмотрим, переменные пиво (<i>Beer</i>)
+      и <i>IQ</i>. Первая из них имеет большие
+      нагрузки как на PC1, так и на PC2, фактически
+      формируя диагональ взаимоотношений
+      между объектами на графике счетов.
+      Переменная <i>IQ</i> не обнаруживает связи с
+      другими переменным, так как ее значения
+      близки к нулю для нагрузок первых трех PC,
+      и проявляет она себя только в четвертой
+      компоненте. Мы видим, что значения <i>IQ</i>
+      не зависят от места жительства,
+      физиологических характеристик и
+      пристрастий к напиткам.&nbsp;</p><p align="left">Впервые
+      PCA был применен еще в начале 20–го века в
+      психологических исследованиях, когда
+      верили, что такие показатели, как IQ или
+      криминальное поведение можно объяснить
+      с помощью индивидуальных
+      физиологических и социальных
+      характеристик. Если сравнить результаты
+      PCA с графиками, построенными нами ранее
+      для пар переменных, видно, что PCA сразу
+      дает всеобъемлющее представление о
+      структуре данных, которое можно "охватить
+      одним взглядом" (точнее, с помощью
+      четырех графиков). Поэтому, одна из
+      наиболее сильных сторон PCA в
+      исследовании структур данных – это
+      переход от большого числа не связанных
+      между собой графиков пар переменных к
+      очень небольшому числу графиков счетов
+      и нагрузок.</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch3.8"></a></p><h2 align="left">3.8.
+      Исследование остатков&nbsp;</h2>
+      <p align="left">Сколько главных компонент
+      нужно использовать в этом примере? Для
+      ответа на вопрос нужно исследовать, как
+      изменяется качество описания при
+      увеличении числа PC. Заметим, что в этом
+      примере мы не будем проводить проверку –
+      в этом нет необходимости, т.к. PCA модель
+      нужна только для исследования данных.
+      Она не будет использоваться далее для
+      прогнозирования, классификации, и т.п.</p><p align="center"><a name="Fig24"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Residuals!A50"><img border="0" src="./PCA_html_files/fig24.gif" width="341" height="341"></a></p><p align="center"><samp>Рис.
+      24 Графики собственных значений</samp></p><p align="left">На
+      Рис.24 показано, как, в зависимости от
+      числа PC, меняются собственные значения &#955;
+      . Видно, что около PC=5 происходит
+      изменение в их поведении. Для расчета
+      показателей TRV и ERV можно получить
+      матрицу остатков <b>E</b> для каждого числа
+      главных компонент <i>A</i> и вычислить
+      требуемые показатели. Пример такого
+      расчета для значения <i>A</i>=4 приведен на
+      листе <em><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Residuals!A1">Residuals</a></em>.</p><p align="center"><a name="Fig25"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Residuals!A1"><img border="0" src="./PCA_html_files/fig25.png" width="789" height="728"></a></p><p align="center"><samp>Рис.
+      25 Анализ остатков</samp></p><p align="left">Однако те
+      же характеристики можно получить и
+      проще, если воспользоваться
+      соотношениями</p><p align="center"><img border="0" src="./PCA_html_files/image34.gif" width="175" height="96"></p><p align="left">Эти
+      величины представлены на <a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Fig26">Рис. 26</a></p><p align="center"><a name="Fig26"></a><a href="https://rcs.chemometrics.ru/old/Tutorials/pca/People.xls#Residuals!J50"><img border="0" src="./PCA_html_files/fig26.gif" width="342" height="342"></a></p><p align="center"><samp>Рис.
+      26 Графики полной (TRV) и объясненной (ERV)
+      дисперсии остатков</samp></p><p align="left">Из этих
+      зависимостей видно, что&nbsp; для описания
+      данных достаточно четырех PC – они
+      моделируют 94% данных, или, иными словами,
+      шум, оставшийся после проекции на
+      четырехмерное пространство PC1–PC4,
+      оставляет всего 6% от исходных данных.</p><p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a><a name="Ch6"></a>
+      </p><h1 align="left">Заключение </h1>
+      <p align="left">Рассмотренный пример позволил
+      взглянуть лишь на малую часть
+      возможностей, предоставляемых PCA–моделированием.
+      Мы рассмотрели задачу исследования
+      данных, которая не предполагает
+      дальнейшего использования построенной
+      модели для предсказания или
+      классификации.&nbsp;</p>
+      <p align="left">Метод PCA дает основу
+      разнообразным методам, применяемым в
+      хемометрике. В задачах <a href="https://rcs.chemometrics.ru/old/Tutorials/classification.htm">классификации</a> –
+      это метод SIMCA, в задачах <a href="https://rcs.chemometrics.ru/old/Tutorials/calibration.htm">калибровки</a> – это
+      метод PCR, в задачах <a href="https://rcs.chemometrics.ru/old/Tutorials/mcr.htm">разделения кривых</a> –
+      это EFA, WFA и т.д.</p>
+      <p align="left"><a href="https://rcs.chemometrics.ru/old/Tutorials/pca.htm#Contents">Содержание</a></p>
+      <p align="left">&nbsp;</p>
+      <p align="left">&nbsp;</p>
+  </td></tr></tbody></table>
+
+
+
+</center></body></html>

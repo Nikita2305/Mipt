@@ -1,0 +1,1 @@
+function habrLogin(){ return false; };

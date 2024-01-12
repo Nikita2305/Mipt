@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- saved from url=(0320)https://disqus.com/recommendations/?base=default&f=sebastianruder&t_u=https%3A%2F%2Fruder.io%2Foptimizing-gradient-descent%2Findex.html&t_d=An%20overview%20of%20gradient%20descent%20optimization%20algorithms&t_t=An%20overview%20of%20gradient%20descent%20optimization%20algorithms#version=6198324358ffdf521018b41ad5f57e72 -->
+<html lang="en" dir="ltr" class="js no-touch localstorage sessionstorage contenteditable use-opacity-transitions"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Disqus Recommendations</title>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <style>
+        .alert--warning {
+            border-radius: 3px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #FFE070;
+            color: #A47703;
+        }
+
+        .alert--warning a,
+        .alert--warning a:hover,
+        .alert--warning strong {
+            color: #A47703;
+            font-weight: bold;
+        }
+
+        .alert--error p,
+        .alert--warning p {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        
+        </style>
+    
+    <style>
+        
+        html {
+            overflow: hidden;
+        }
+        
+
+        #error {
+            display: none;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+
+        
+    </style>
+
+<script crossorigin="anonymous" id="bootstrap-script" data-app="recommendations" src="./recommendations.load.6198324358ffdf521018b41ad5f57e72.js"></script><meta http-equiv="Content-Security-Policy" content="script-src https:;"><link rel="stylesheet" href="./recommendations.10022a97346f1c6e3798931bbd8e4bb5.css"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="recommendations/main" src="./recommendations.bundle.2502c0f5aa4270464aad7e38352f9a52.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="remote/config" src="./config.js"></script><style type="text/css">@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap"); body.roboto , body.roboto input, body.roboto select, body.roboto textarea { font-family: Roboto, sans-serif; }</style></head>
+<body class="vsc-initialized roboto dark">
+    
+
+    
+    <div id="error" class="alert--error">
+        <p>We were unable to load Disqus Recommendations. If you are a moderator please see our <a href="https://docs.disqus.com/help/83/"> troubleshooting guide</a>. </p>
+    </div>
+
+    
+    <script type="text/json" id="disqus-forumData">{"session":{"canModerate":false,"audienceSyncVerified":false,"mustVerify":false,"canReply":true,"mustVerifyEmail":false},"forum":{"aetBannerConfirmation":null,"founder":"14938262","twitterName":"","commentsLinkOne":"1 Comment","guidelines":null,"favicon":{"permalink":"https://disqus.com/api/forums/favicons/sebastianruder.jpg","cache":"//a.disquscdn.com/1671639122/images/favicon-default.png"},"commentsLinkZero":"0 Comments","disableDisqusBranding":false,"id":"sebastianruder","createdAt":"2015-02-20T16:34:41.181206","category":"Tech","aetBannerEnabled":false,"aetBannerTitle":null,"raw_guidelines":null,"initialCommentCount":null,"votingType":null,"daysUnapproveNewUsers":null,"installCompleted":true,"moderatorBadgeText":"","commentPolicyText":null,"aetEnabled":false,"channel":null,"sort":4,"description":"","newPolicy":true,"raw_description":"","customFont":null,"language":"en","adsReviewStatus":1,"commentsPlaceholderTextEmpty":null,"daysAlive":0,"forumCategory":{"date_added":"2016-01-28T01:54:31","id":8,"name":"Tech"},"linkColor":null,"colorScheme":"auto","pk":"3468694","commentsPlaceholderTextPopulated":null,"permissions":{},"commentPolicyLink":null,"aetBannerDescription":null,"name":"Blog","commentsLinkMultiple":"{num} Comments","settings":{"threadRatingsEnabled":false,"adsDRNativeEnabled":false,"behindClickEnabled":false,"disable3rdPartyTrackers":false,"adsVideoEnabled":false,"adsProductVideoEnabled":false,"adsPositionTopEnabled":false,"ssoRequired":false,"unapproveLinks":false,"adsPositionRecommendationsEnabled":false,"linkAffiliationEnabled":false,"adsProductLinksThumbnailsEnabled":false,"hasCustomAvatar":false,"organicDiscoveryEnabled":true,"adsProductDisplayEnabled":false,"adsProductLinksEnabled":false,"audienceSyncEnabled":false,"threadReactionsEnabled":true,"adsEnabled":false,"disableSocialShare":false,"allowAnonPost":false,"adsProductStoriesEnabled":false,"sidebarEnabled":false,"adultContent":false,"allowAnonVotes":false,"gifPickerEnabled":true,"mustVerify":true,"badgesEnabled":false,"mustVerifyEmail":true,"unapproveNewUsersEnabled":false,"mediaembedEnabled":true,"userIdentityDisabled":false,"adsPositionBottomEnabled":false,"discoveryLocked":false,"validateAllPosts":false,"adsSettingsLocked":false,"isVIP":false,"adsPositionInthreadEnabled":false},"organizationId":717703,"typeface":"auto","url":"","daysThreadAlive":0,"avatar":{"small":{"permalink":"https://disqus.com/api/forums/avatars/sebastianruder.jpg?size=32","cache":"//a.disquscdn.com/1671639122/images/noavatar32.png"},"large":{"permalink":"https://disqus.com/api/forums/avatars/sebastianruder.jpg?size=92","cache":"//a.disquscdn.com/1671639122/images/noavatar92.png"}},"signedUrl":""}}</script>
+    <script type="text/json" id="disqus-recommendationSettings">{"maxAgeDays":0,"titleHidden":false,"placement":"top","recommendationsEnabled":true,"metaComments":true,"disableOverlay":false,"contentPreview":true,"metaDate":true,"id":16115}</script>
+
+    <div id="fixed-content"></div>
+
+
+    
+        
+        
+        <script>!function () {
+            var d = document;
+            var toH = d.head.appendChild.bind(d.head);
+
+            var v = window.location.href.match(/[#&?]version=([0-9a-f]{32})/);
+            var src = 'https://c.disquscdn.com/next/recommendations/recommendations.load';
+            if (v)
+                src += '.' + v[1];
+            src += '.js';
+
+            var s = d.createElement('script');
+            s.crossOrigin = 'anonymous';
+            s.id = 'bootstrap-script';
+            s.setAttribute('data-app', 'recommendations');
+            s.src = src;
+            toH(s);
+
+            var m = d.createElement('meta');
+            m.setAttribute('http-equiv', 'Content-Security-Policy');
+            m.setAttribute('content', "script-src https:;");
+            toH(m);
+        }();</script>
+    
+
+
+<script src="./common.bundle.ee9c33b24a56672a5987fadb46fbba34.js"></script><div id="recommendations-layout" class="recommendations-layout" data-tracking-area="recommendations-layout"><div class="post-list" style="height: auto; visibility: visible;"><div class="recommendations-wrapper" style="width: 100%;"><div id="recommend-main-c9" class="recommend-main  "><section id="col-organic-c21" class="col-organic"><header id="recommendations-header" class="recommend-col-header"><h2 class="recommendations-unit-title">Also on <strong class="recommendations-forum">Blog</strong></h2></header><div class="recommendations-unit"><div class="recommendation-container"><button class="scroll-btn scroll-left" data-action="scroll-left" tabindex="-1">❮</button><div class="recommend-wrapper"><div class="recommend-posts" data-role="recommend-posts"><div class="recommend-post post-0" id="recommend-link-organic-8733185356" data-role="recommended-post" data-link="https://ruder.io/nlp-benchmarking/index.html" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get" alt="Challenges and Opportunities in NLP Benchmarking" title="Challenges and Opportunities in NLP Benchmarking"><span class="overlay"></span></div><h3 class="recommend-post-title" title="Challenges and Opportunities in NLP Benchmarking"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="Challenges and Opportunities in NLP Benchmarking">Challenges and Opportunities in NLP …</span></h3></header><ul class="meta"><li class="time">a year ago</li> <li class="comments">1 comment </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">Recent NLP models have outpaced the benchmarks to test for them. This post …</span></div></div></div><div class="recommend-post post-1" id="recommend-link-organic-7707981226" data-role="recommended-post" data-link="https://ruder.io/unsupervised-cross-lingual-learning/" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(1)" alt="Unsupervised Cross-lingual Representation Learning" title="Unsupervised Cross-lingual Representation Learning"><span class="overlay"></span></div><h3 class="recommend-post-title" title="Unsupervised Cross-lingual Representation Learning"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="Unsupervised Cross-lingual Representation Learning">Unsupervised Cross-lingual Representation …</span></h3></header><ul class="meta"><li class="time">3 years ago</li> <li class="comments">1 comment </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">This post expands on the ACL 2019 tutorial on Unsupervised …</span></div></div></div><div class="recommend-post post-2" id="recommend-link-organic-7261531868" data-role="recommended-post" data-link="http://ruder.io/tracking-progress-nlp/index.html" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(2)" alt="Tracking the Progress in Natural Language Processing" title="Tracking the Progress in Natural Language Processing"><span class="overlay"></span></div><h3 class="recommend-post-title" title="Tracking the Progress in Natural Language Processing"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="Tracking the Progress in Natural Language Processing">Tracking the Progress in Natural Language …</span></h3></header><ul class="meta"><li class="time">4 years ago</li> <li class="comments">1 comment </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">This post presents a new resource to track the progress in NLP, including …</span></div></div></div><div class="recommend-post post-3" id="recommend-link-organic-8150268166" data-role="recommended-post" data-link="https://ruder.io/10-tips-for-research-and-a-phd/" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(3)" alt="10 Tips for Research and a PhD" title="10 Tips for Research and a PhD"><span class="overlay"></span></div><h3 class="recommend-post-title" title="10 Tips for Research and a PhD"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="10 Tips for Research and a PhD">10 Tips for Research and a PhD</span></h3></header><ul class="meta"><li class="time">2 years ago</li> <li class="comments">4 comments </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">High-level and practical tips for research and a PhD with a focus on advice for …</span></div></div></div><div class="recommend-post post-4" id="recommend-link-organic-6818501650" data-role="recommended-post" data-link="http://ruder.io/acl-2018-highlights/" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(4)" alt="ACL 2018 Highlights: Understanding Representations" title="ACL 2018 Highlights: Understanding Representations"><span class="overlay"></span></div><h3 class="recommend-post-title" title="ACL 2018 Highlights: Understanding Representations"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="ACL 2018 Highlights: Understanding Representations">ACL 2018 Highlights: Understanding …</span></h3></header><ul class="meta"><li class="time">4 years ago</li> <li class="comments">6 comments </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">This post reviews two themes of ACL 2018: 1) gaining a better …</span></div></div></div><div class="recommend-post post-5" id="recommend-link-organic-7115148598" data-role="recommended-post" data-link="http://ruder.io/10-exciting-ideas-of-2018-in-nlp/" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(5)" alt="10 Exciting Ideas of 2018 in NLP" title="10 Exciting Ideas of 2018 in NLP"><span class="overlay"></span></div><h3 class="recommend-post-title" title="10 Exciting Ideas of 2018 in NLP"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="10 Exciting Ideas of 2018 in NLP">10 Exciting Ideas of 2018 in NLP</span></h3></header><ul class="meta"><li class="time">4 years ago</li> <li class="comments">20 comments </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">This post gathers 10 ideas that I found exciting and impactful this year—and …</span></div></div></div><div class="recommend-post post-6" id="recommend-link-organic-6788212526" data-role="recommended-post" data-link="http://ruder.io/nlp-imagenet/" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(6)" alt="NLP&#39;s ImageNet moment has arrived" title="NLP&#39;s ImageNet moment has arrived"><span class="overlay"></span></div><h3 class="recommend-post-title" title="NLP&#39;s ImageNet moment has arrived"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="NLP&#39;s ImageNet moment has arrived">NLP's ImageNet moment has arrived</span></h3></header><ul class="meta"><li class="time">5 years ago</li> <li class="comments">18 comments </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">Big changes are underway in the world of Natural Language Processing …</span></div></div></div><div class="recommend-post post-7" id="recommend-link-organic-7593582325" data-role="recommended-post" data-link="http://ruder.io/state-of-transfer-learning-in-nlp/" tabindex="0"><header class="recommend-post-header"><div class="recommend-image-wrapper"><img src="./get(7)" alt="The State of Transfer Learning in NLP" title="The State of Transfer Learning in NLP"><span class="overlay"></span></div><h3 class="recommend-post-title" title="The State of Transfer Learning in NLP"><span data-role="recommend-thread-title" class="title line-truncate" data-line-truncate="3" data-content="The State of Transfer Learning in NLP">The State of Transfer Learning in NLP</span></h3></header><ul class="meta"><li class="time">3 years ago</li> <li class="comments">7 comments </li></ul><div class="content-preview-wrapper"><div class="recommend-content"><span data-role="recommend-description-snippet" class="line-truncate" data-line-truncate="5">This post expands on the NAACL 2019 tutorial on Transfer Learning in NLP. …</span></div></div></div></div></div><button class="scroll-btn scroll-right" data-action="scroll-right" tabindex="-1">❯</button></div></div></section></div></div></div></div></body></html>

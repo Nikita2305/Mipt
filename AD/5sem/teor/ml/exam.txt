@@ -1,0 +1,7 @@
+https://docs.google.com/document/d/1tWgmICYY9fooi2fv_X5Kb2dXSi8IxS0eY8On5FNxad8/edit#
+
+https://neerc.ifmo.ru/wiki/index.php?title=Метод_главных_компонент_(PCA)
+
+UMAP:
+https://pair-code.github.io/understanding-umap
+
